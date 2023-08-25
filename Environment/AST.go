@@ -15,7 +15,7 @@ func (a *AST) GetPrint() string {
 	return a.Print
 }
 
-func (a *AST) SetPring(ToPrint string) {
+func (a *AST) SetPrint(ToPrint string) {
 	a.Print = a.Print + ToPrint
 }
 

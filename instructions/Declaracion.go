@@ -1,4 +1,4 @@
-package instructio	
+package instructions	
 
 import(
 	"Proyecto1_OLC2_2S2023_202101648/Environment"
