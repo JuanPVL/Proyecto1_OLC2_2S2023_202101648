@@ -45,12 +45,28 @@ printstmt returns [interfaces.Instruction prnt]
 : PRINT PAR_IZQ expr PAR_DER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}
 ;
 
+blockelsif returns [[]interface{} blkif]
+@init{
+    $blkif = []interface{}{}
+    var listIfs []IIfstmtContext
+    }
+: elseif+=ifstmt+ 
+    {
+        listIfs = localctx.(*BlockelsifContext).GetElseif()
+        for _, e := range listIfs {
+            $blkif = append($blkif, e.GetIfinst())
+        }
+    }
+;
+
 ifstmt returns [interfaces.Instruction ifinst]
 : IF expr LLAVE_IZQ block LLAVE_DER { $ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk) }
+| IF expr LLAVE_IZQ block LLAVE_DER ELSE LLAVE_IZQ block LLAVE_DER {}
+| IF expr LLAVE_IZQ block LLAVE_DER ELSE blockelsif {}
 ;
 
 declarationstmt returns [interfaces.Instruction dec]
-: VAR ID DOSPUNTOS types IGUAL expr  { $dec = instructions.NewDeclaration($VAR.line, $VAR.pos, $ID.text, $types.ty, $expr.e) }
+: VAR ID DOSPUNTOS types IGUAL expr  { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text, $types.ty, $expr.e) }
 ;
 
 types returns[environment.TipoExpresion ty]
@@ -71,7 +87,7 @@ expr returns [interfaces.Expression e]
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | PAR_IZQ expr PAR_DER { $e = $expr.e }
 | list=listArray { $e = $list.p}
-| COR_IZQ listParams COR_DER { $e = expressions.NewArray($CORIZQ.line, $CORIZQ.pos, $listParams.l) }
+| COR_IZQ listParams COR_DER { $e = expressions.NewArray($COR_IZQ.line, $COR_IZQ.pos, $listParams.l) }
 | NUMBER                             
     {
         if (strings.Contains($NUMBER.text,".")){
@@ -111,5 +127,5 @@ listParams returns[[]interface{} l]
 
 listArray returns[interfaces.Expression p]
 : list = listArray COR_IZQ expr COR_DER { $p = expressions.NewArrayAccess($list.start.GetLine(), $list.start.GetColumn(), $list.p, $expr.e) }
-| ID { $p = expressions.NewCallVar($ID.line, $ID.pos, $ID.text)}
+| ID { $p = expressions.NewLlamadoVar($ID.line, $ID.pos, $ID.text)}
 ;
