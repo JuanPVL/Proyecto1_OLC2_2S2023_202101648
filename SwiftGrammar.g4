@@ -39,11 +39,14 @@ instruction returns [interfaces.Instruction inst]
 : printstmt { $inst = $printstmt.prnt}
 | ifstmt { $inst = $ifstmt.ifinst }
 | declarationstmt { $inst = $declarationstmt.dec }
+| asignationstmt { $inst = $asignationstmt.asig }
+| whilestmt { $inst = $whilestmt.whileinst }
 ;
 
 printstmt returns [interfaces.Instruction prnt]
-: PRINT PAR_IZQ expr PAR_DER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}
+: PRINT PAR_IZQ listParams PAR_DER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$listParams.l)}
 ;
+
 
 blockelsif returns [[]interface{} blkif]
 @init{
@@ -60,13 +63,25 @@ blockelsif returns [[]interface{} blkif]
 ;
 
 ifstmt returns [interfaces.Instruction ifinst]
-: IF expr LLAVE_IZQ block LLAVE_DER { $ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk) }
-| IF expr LLAVE_IZQ block LLAVE_DER ELSE LLAVE_IZQ block LLAVE_DER {}
-| IF expr LLAVE_IZQ block LLAVE_DER ELSE blockelsif {}
+: IF expr LLAVE_IZQ block LLAVE_DER { $ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }
+| IF expr LLAVE_IZQ ifblck=block LLAVE_DER ELSE LLAVE_IZQ elseblck=block LLAVE_DER {$ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifblck.blk, $elseblck.blk)}
+| IF expr LLAVE_IZQ ifblck=block LLAVE_DER ELSE blockelsif {$ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifblck.blk, $blockelsif.blkif)}
+;
+
+whilestmt returns [interfaces.Instruction whileinst]
+: WHILE expr LLAVE_IZQ block LLAVE_DER { $whileinst = instructions.NewWhile($WHILE.line, $WHILE.pos, $expr.e, $block.blk) }
 ;
 
 declarationstmt returns [interfaces.Instruction dec]
-: VAR ID DOSPUNTOS types IGUAL expr  { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text, $types.ty, $expr.e) }
+: VAR ID DOSPUNTOS types IGUAL expr  { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, $expr.e) }
+| VAR ID IGUAL expr { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true,environment.DEPENDIENTE, $expr.e) }
+| VAR ID DOSPUNTOS types CIERRAPREGUNTA { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, nil) }
+| LET ID DOSPUNTOS types IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false, $types.ty, $expr.e) }
+| LET ID IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false,environment.DEPENDIENTE, $expr.e) }
+;
+
+asignationstmt returns [interfaces.Instruction asig]
+: ID IGUAL expr { $asig = instructions.NewAsignacion($ID.line, $ID.pos, $ID.text, $expr.e) }
 ;
 
 types returns[environment.TipoExpresion ty]
@@ -78,11 +93,13 @@ types returns[environment.TipoExpresion ty]
 ;
 
 expr returns [interfaces.Expression e]
-: left=expr op=(MULT|DIV) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+: RES left=expr { $e = expressions.NewOperation($RES.line, $RES.pos, $left.e, "UNARIO", nil) }
+| left=expr op=(MULT|DIV|MOD) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=(SUM|RES) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=(MAYIG|MAYOR) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=(MENIG|MENOR) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=(IG_IG|DIFE) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| NOT left=expr {$e = expressions.NewOperation($NOT.line, $NOT.pos, $left.e, $NOT.text, nil)}
 | left=expr op=AND right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | PAR_IZQ expr PAR_DER { $e = $expr.e }

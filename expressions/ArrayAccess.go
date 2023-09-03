@@ -45,5 +45,6 @@ func (p ArrayAccess) Ejecutar(ast *environment.AST, env interface{}) environment
 		Col: p.Col,
 		Tipo: environment.NULL,
 		Valor: 0,
+		Mutable: true,
 	}
 }

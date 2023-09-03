@@ -15,11 +15,12 @@ IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
 VAR: 'var';
+LET: 'let';
 
 //primitivos
 NUMBER: [0-9]+ ('.' [0-9]+)?;
 STRING: '"'~["]*'"';
-ID: ([a-zA-Z])[a-zA-Z0-9_]*;
+ID: ([a-zA-Z_])[a-zA-Z0-9_]*;
 
 //Simbolos
 DIFE: '!=';
@@ -36,6 +37,7 @@ MULT: '*';
 DIV: '/';
 SUM: '+';
 RES: '-';
+MOD: '%';
 PAR_IZQ: '(';
 PAR_DER: ')';
 LLAVE_IZQ: '{';
@@ -44,6 +46,7 @@ DOSPUNTOS: ':';
 COR_IZQ: '[';
 COR_DER: ']';
 COMA: ',';
+CIERRAPREGUNTA: '?';
 
 //Saltar
 WHITESPACE: [ \\\r\n\t]+ -> skip;

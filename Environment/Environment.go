@@ -48,11 +48,16 @@ func (env Environment) SetVariable(id string, value Symbol) Symbol {
 	tmpEnv = env
 	for {
 		if variable, ok := tmpEnv.Tabla[id]; ok {
-			if tmpEnv.Tabla[id].Tipo == value.Tipo {
-				tmpEnv.Tabla[id] = value
-				return variable
+			if tmpEnv.Tabla[id].Mutable == true{
+				if tmpEnv.Tabla[id].Tipo == value.Tipo {
+					tmpEnv.Tabla[id] = value
+					return variable
+				} else {
+					fmt.Println("Tipo de dato incorrecto: ")
+					return Symbol{Lin: 0, Col: 0, Tipo: NULL, Valor: 0}
+				}
 			} else {
-				fmt.Println("Tipo de dato incorrecto: ")
+				fmt.Println("Variable no mutable: " , tmpEnv.Tabla[id].Valor)
 				return Symbol{Lin: 0, Col: 0, Tipo: NULL, Valor: 0}
 			}
 		}

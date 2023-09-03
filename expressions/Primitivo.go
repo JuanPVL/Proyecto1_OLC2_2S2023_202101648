@@ -22,5 +22,6 @@ func (p Primitivo) Ejecutar(ast *environment.AST, env interface{}) environment.S
 		Col: p.Col,
 		Tipo: p.Tipo,
 		Valor: p.Valor,
+		Mutable: true,
 	}
 }

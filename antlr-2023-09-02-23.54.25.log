@@ -1,0 +1,321 @@
+2023-09-02 23:54:22:785 grammar LogManager.java:25 before: (LEXER_GRAMMAR SwiftLexer (RULES (RULE INT (BLOCK (ALT 'Int'))) (RULE FLOAT (BLOCK (ALT 'Float'))) (RULE BOOL (BLOCK (ALT 'Bool'))) (RULE STR (BLOCK (ALT 'String'))) (RULE TRU (BLOCK (ALT 'true'))) (RULE FAL (BLOCK (ALT 'false'))) (RULE PRINT (BLOCK (ALT 'print'))) (RULE IF (BLOCK (ALT 'if'))) (RULE ELSE (BLOCK (ALT 'else'))) (RULE WHILE (BLOCK (ALT 'while'))) (RULE VAR (BLOCK (ALT 'var'))) (RULE LET (BLOCK (ALT 'let'))) (RULE NUMBER (BLOCK (ALT (+ (BLOCK (ALT [0-9]))) (? (BLOCK (ALT '.' (+ (BLOCK (ALT [0-9]))))))))) (RULE STRING (BLOCK (ALT '"' (* (BLOCK (ALT (~ (SET ["]))))) '"'))) (RULE ID (BLOCK (ALT (BLOCK (ALT [a-zA-Z_])) (* (BLOCK (ALT [a-zA-Z0-9_])))))) (RULE DIFE (BLOCK (ALT '!='))) (RULE IG_IG (BLOCK (ALT '=='))) (RULE NOT (BLOCK (ALT '!'))) (RULE OR (BLOCK (ALT '||'))) (RULE AND (BLOCK (ALT '&&'))) (RULE IGUAL (BLOCK (ALT '='))) (RULE MAYIG (BLOCK (ALT '>='))) (RULE MENIG (BLOCK (ALT '<='))) (RULE MAYOR (BLOCK (ALT '>'))) (RULE MENOR (BLOCK (ALT '<'))) (RULE MULT (BLOCK (ALT '*'))) (RULE DIV (BLOCK (ALT '/'))) (RULE SUM (BLOCK (ALT '+'))) (RULE RES (BLOCK (ALT '-'))) (RULE PAR_IZQ (BLOCK (ALT '('))) (RULE PAR_DER (BLOCK (ALT ')'))) (RULE LLAVE_IZQ (BLOCK (ALT '{'))) (RULE LLAVE_DER (BLOCK (ALT '}'))) (RULE DOSPUNTOS (BLOCK (ALT ':'))) (RULE COR_IZQ (BLOCK (ALT '['))) (RULE COR_DER (BLOCK (ALT ']'))) (RULE COMA (BLOCK (ALT ','))) (RULE CIERRAPREGUNTA (BLOCK (ALT '?'))) (RULE WHITESPACE (BLOCK (LEXER_ALT_ACTION (ALT (+ (BLOCK (ALT [ \\\r\n\t])))) skip))) (RULE COMMENT (BLOCK (LEXER_ALT_ACTION (ALT '/*' (* (BLOCK (ALT .))) '*/') skip))) (RULE LINE_COMMENT (BLOCK (LEXER_ALT_ACTION (ALT '//' (* (BLOCK (ALT (~ (SET [\r\n])))))) skip))) (RULE ESC_SEQ (RULEMODIFIERS fragment) (BLOCK (ALT '\\' (BLOCK (ALT '\\') (ALT '@') (ALT '[') (ALT ']') (ALT '.') (ALT '#') (ALT '+') (ALT '-') (ALT '!') (ALT ':') (ALT ' ')))))))
+2023-09-02 23:54:22:823 grammar LogManager.java:25 after: (LEXER_GRAMMAR SwiftLexer (RULES (RULE INT (BLOCK (ALT 'Int'))) (RULE FLOAT (BLOCK (ALT 'Float'))) (RULE BOOL (BLOCK (ALT 'Bool'))) (RULE STR (BLOCK (ALT 'String'))) (RULE TRU (BLOCK (ALT 'true'))) (RULE FAL (BLOCK (ALT 'false'))) (RULE PRINT (BLOCK (ALT 'print'))) (RULE IF (BLOCK (ALT 'if'))) (RULE ELSE (BLOCK (ALT 'else'))) (RULE WHILE (BLOCK (ALT 'while'))) (RULE VAR (BLOCK (ALT 'var'))) (RULE LET (BLOCK (ALT 'let'))) (RULE NUMBER (BLOCK (ALT (+ (BLOCK (ALT [0-9]))) (? (BLOCK (ALT '.' (+ (BLOCK (ALT [0-9]))))))))) (RULE STRING (BLOCK (ALT '"' (* (BLOCK (ALT (~ (SET ["]))))) '"'))) (RULE ID (BLOCK (ALT (BLOCK (ALT [a-zA-Z_])) (* (BLOCK (ALT [a-zA-Z0-9_])))))) (RULE DIFE (BLOCK (ALT '!='))) (RULE IG_IG (BLOCK (ALT '=='))) (RULE NOT (BLOCK (ALT '!'))) (RULE OR (BLOCK (ALT '||'))) (RULE AND (BLOCK (ALT '&&'))) (RULE IGUAL (BLOCK (ALT '='))) (RULE MAYIG (BLOCK (ALT '>='))) (RULE MENIG (BLOCK (ALT '<='))) (RULE MAYOR (BLOCK (ALT '>'))) (RULE MENOR (BLOCK (ALT '<'))) (RULE MULT (BLOCK (ALT '*'))) (RULE DIV (BLOCK (ALT '/'))) (RULE SUM (BLOCK (ALT '+'))) (RULE RES (BLOCK (ALT '-'))) (RULE PAR_IZQ (BLOCK (ALT '('))) (RULE PAR_DER (BLOCK (ALT ')'))) (RULE LLAVE_IZQ (BLOCK (ALT '{'))) (RULE LLAVE_DER (BLOCK (ALT '}'))) (RULE DOSPUNTOS (BLOCK (ALT ':'))) (RULE COR_IZQ (BLOCK (ALT '['))) (RULE COR_DER (BLOCK (ALT ']'))) (RULE COMA (BLOCK (ALT ','))) (RULE CIERRAPREGUNTA (BLOCK (ALT '?'))) (RULE WHITESPACE (BLOCK (LEXER_ALT_ACTION (ALT (+ (BLOCK (ALT [ \\\r\n\t])))) skip))) (RULE COMMENT (BLOCK (LEXER_ALT_ACTION (ALT '/*' (* (BLOCK (ALT .))) '*/') skip))) (RULE LINE_COMMENT (BLOCK (LEXER_ALT_ACTION (ALT '//' (* (BLOCK (ALT (~ (SET [\r\n])))))) skip))) (RULE ESC_SEQ (RULEMODIFIERS fragment) (BLOCK (ALT '\\' (SET '\\' '@' '[' ']' '.' '#' '+' '-' '!' ':' ' '))))))
+2023-09-02 23:54:24:591 grammar LogManager.java:25 before: (COMBINED_GRAMMAR SwiftGrammar (OPTIONS (= tokenVocab SwiftLexer)) (@ header {
+    import "Proyecto1_OLC2_2S2023_202101648/interfaces"
+    import "Proyecto1_OLC2_2S2023_202101648/Environment"
+    import "Proyecto1_OLC2_2S2023_202101648/expressions"
+    import "Proyecto1_OLC2_2S2023_202101648/instructions"
+    import "strings"
+}) (RULES (RULE s (returns []interface{} code) (BLOCK (ALT block EOF {   
+        $code = $block.blk
+    }))) (RULE block (returns []interface{} blk) (@ init {
+    $blk = []interface{}{}
+    var listInt []IInstructionContext
+  }) (BLOCK (ALT (+ (BLOCK (ALT (+= ins instruction)))) {
+        listInt = localctx.(*BlockContext).GetIns()
+        for _, e := range listInt {
+            $blk = append($blk, e.GetInst())
+        }
+    }))) (RULE instruction (returns interfaces.Instruction inst) (BLOCK (ALT printstmt { $inst = $printstmt.prnt}) (ALT ifstmt { $inst = $ifstmt.ifinst }) (ALT declarationstmt { $inst = $declarationstmt.dec }) (ALT asignationstmt { $inst = $asignationstmt.asig }))) (RULE printstmt (returns interfaces.Instruction prnt) (BLOCK (ALT PRINT PAR_IZQ expr PAR_DER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}))) (RULE blockelsif (returns []interface{} blkif) (@ init {
+    $blkif = []interface{}{}
+    var listIfs []IIfstmtContext
+    }) (BLOCK (ALT (+ (BLOCK (ALT (+= elseif ifstmt)))) {
+        listIfs = localctx.(*BlockelsifContext).GetElseif()
+        for _, e := range listIfs {
+            $blkif = append($blkif, e.GetIfinst())
+        }
+    }))) (RULE ifstmt (returns interfaces.Instruction ifinst) (BLOCK (ALT IF expr LLAVE_IZQ block LLAVE_DER { $ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }) (ALT IF expr LLAVE_IZQ (= ifblck block) LLAVE_DER ELSE LLAVE_IZQ (= elseblck block) LLAVE_DER {$ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifblck.blk, $elseblck.blk)}) (ALT IF expr LLAVE_IZQ (= ifblck block) LLAVE_DER ELSE blockelsif {$ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifblck.blk, $blockelsif.blkif)}))) (RULE declarationstmt (returns interfaces.Instruction dec) (BLOCK (ALT VAR ID DOSPUNTOS types IGUAL expr { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, $expr.e) }) (ALT VAR ID IGUAL expr { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true,environment.DEPENDIENTE, $expr.e) }) (ALT VAR ID DOSPUNTOS types CIERRAPREGUNTA { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, nil) }) (ALT LET ID DOSPUNTOS types IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false, $types.ty, $expr.e) }) (ALT LET ID IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false,environment.DEPENDIENTE, $expr.e) }))) (RULE asignationstmt interfaces.Instruction asig (BLOCK (ALT ID IGUAL expr { $asig = instructions.NewAsignacion($ID.line, $ID.pos, $ID.text, $expr.e) }))) (RULE types (returns environment.TipoExpresion ty) (BLOCK (ALT INT { $ty = environment.INTEGER }) (ALT FLOAT { $ty = environment.FLOAT }) (ALT STR { $ty = environment.STRING }) (ALT BOOL { $ty = environment.BOOLEAN }) (ALT COR_IZQ COR_DER { $ty = environment.ARRAY }))) (RULE expr (returns interfaces.Expression e) (BLOCK (ALT (= left expr) (= op (BLOCK (ALT MULT) (ALT DIV))) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (BLOCK (ALT SUM) (ALT RES))) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (BLOCK (ALT MAYIG) (ALT MAYOR))) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (BLOCK (ALT MENIG) (ALT MENOR))) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (BLOCK (ALT IG_IG) (ALT DIFE))) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op AND) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op OR) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT PAR_IZQ expr PAR_DER { $e = $expr.e }) (ALT (= list listArray) { $e = $list.p}) (ALT COR_IZQ listParams COR_DER { $e = expressions.NewArray($COR_IZQ.line, $COR_IZQ.pos, $listParams.l) }) (ALT NUMBER {
+        if (strings.Contains($NUMBER.text,".")){
+            num,err := strconv.ParseFloat($NUMBER.text, 64);
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.FLOAT)
+        }else{
+            num,err := strconv.Atoi($NUMBER.text)
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.INTEGER)
+        }
+    }) (ALT STRING {
+        str := $STRING.text
+        $e = expressions.NewPrimitive($STRING.line, $STRING.pos, str[1:len(str)-1],environment.STRING)
+    }) (ALT TRU { $e = expressions.NewPrimitive($TRU.line, $TRU.pos, true, environment.BOOLEAN) }) (ALT FAL { $e = expressions.NewPrimitive($FAL.line, $FAL.pos, false, environment.BOOLEAN) }))) (RULE listParams (returns []interface{} l) (BLOCK (ALT (= list listParams) COMA expr {
+                                var arr []interface{}
+                                arr = append($list.l, $expr.e)
+                                $l = arr
+                            }) (ALT expr {
+            $l = []interface{}{}
+            $l = append($l, $expr.e)
+        }))) (RULE listArray (returns interfaces.Expression p) (BLOCK (ALT (= list listArray) COR_IZQ expr COR_DER { $p = expressions.NewArrayAccess($list.start.GetLine(), $list.start.GetColumn(), $list.p, $expr.e) }) (ALT ID { $p = expressions.NewLlamadoVar($ID.line, $ID.pos, $ID.text)})))))
+2023-09-02 23:54:24:599 grammar LogManager.java:25 after: (COMBINED_GRAMMAR SwiftGrammar (OPTIONS (= tokenVocab SwiftLexer)) (@ header {
+    import "Proyecto1_OLC2_2S2023_202101648/interfaces"
+    import "Proyecto1_OLC2_2S2023_202101648/Environment"
+    import "Proyecto1_OLC2_2S2023_202101648/expressions"
+    import "Proyecto1_OLC2_2S2023_202101648/instructions"
+    import "strings"
+}) (RULES (RULE s (returns []interface{} code) (BLOCK (ALT block EOF {   
+        $code = $block.blk
+    }))) (RULE block (returns []interface{} blk) (@ init {
+    $blk = []interface{}{}
+    var listInt []IInstructionContext
+  }) (BLOCK (ALT (+ (BLOCK (ALT (+= ins instruction)))) {
+        listInt = localctx.(*BlockContext).GetIns()
+        for _, e := range listInt {
+            $blk = append($blk, e.GetInst())
+        }
+    }))) (RULE instruction (returns interfaces.Instruction inst) (BLOCK (ALT printstmt { $inst = $printstmt.prnt}) (ALT ifstmt { $inst = $ifstmt.ifinst }) (ALT declarationstmt { $inst = $declarationstmt.dec }) (ALT asignationstmt { $inst = $asignationstmt.asig }))) (RULE printstmt (returns interfaces.Instruction prnt) (BLOCK (ALT PRINT PAR_IZQ expr PAR_DER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}))) (RULE blockelsif (returns []interface{} blkif) (@ init {
+    $blkif = []interface{}{}
+    var listIfs []IIfstmtContext
+    }) (BLOCK (ALT (+ (BLOCK (ALT (+= elseif ifstmt)))) {
+        listIfs = localctx.(*BlockelsifContext).GetElseif()
+        for _, e := range listIfs {
+            $blkif = append($blkif, e.GetIfinst())
+        }
+    }))) (RULE ifstmt (returns interfaces.Instruction ifinst) (BLOCK (ALT IF expr LLAVE_IZQ block LLAVE_DER { $ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }) (ALT IF expr LLAVE_IZQ (= ifblck block) LLAVE_DER ELSE LLAVE_IZQ (= elseblck block) LLAVE_DER {$ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifblck.blk, $elseblck.blk)}) (ALT IF expr LLAVE_IZQ (= ifblck block) LLAVE_DER ELSE blockelsif {$ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifblck.blk, $blockelsif.blkif)}))) (RULE declarationstmt (returns interfaces.Instruction dec) (BLOCK (ALT VAR ID DOSPUNTOS types IGUAL expr { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, $expr.e) }) (ALT VAR ID IGUAL expr { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true,environment.DEPENDIENTE, $expr.e) }) (ALT VAR ID DOSPUNTOS types CIERRAPREGUNTA { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, nil) }) (ALT LET ID DOSPUNTOS types IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false, $types.ty, $expr.e) }) (ALT LET ID IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false,environment.DEPENDIENTE, $expr.e) }))) (RULE asignationstmt interfaces.Instruction asig (BLOCK (ALT ID IGUAL expr { $asig = instructions.NewAsignacion($ID.line, $ID.pos, $ID.text, $expr.e) }))) (RULE types (returns environment.TipoExpresion ty) (BLOCK (ALT INT { $ty = environment.INTEGER }) (ALT FLOAT { $ty = environment.FLOAT }) (ALT STR { $ty = environment.STRING }) (ALT BOOL { $ty = environment.BOOLEAN }) (ALT COR_IZQ COR_DER { $ty = environment.ARRAY }))) (RULE expr (returns interfaces.Expression e) (BLOCK (ALT (= left expr) (= op (SET MULT DIV)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (SET SUM RES)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (SET MAYIG MAYOR)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (SET MENIG MENOR)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (SET IG_IG DIFE)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op AND) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op OR) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT PAR_IZQ expr PAR_DER { $e = $expr.e }) (ALT (= list listArray) { $e = $list.p}) (ALT COR_IZQ listParams COR_DER { $e = expressions.NewArray($COR_IZQ.line, $COR_IZQ.pos, $listParams.l) }) (ALT NUMBER {
+        if (strings.Contains($NUMBER.text,".")){
+            num,err := strconv.ParseFloat($NUMBER.text, 64);
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.FLOAT)
+        }else{
+            num,err := strconv.Atoi($NUMBER.text)
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.INTEGER)
+        }
+    }) (ALT STRING {
+        str := $STRING.text
+        $e = expressions.NewPrimitive($STRING.line, $STRING.pos, str[1:len(str)-1],environment.STRING)
+    }) (ALT TRU { $e = expressions.NewPrimitive($TRU.line, $TRU.pos, true, environment.BOOLEAN) }) (ALT FAL { $e = expressions.NewPrimitive($FAL.line, $FAL.pos, false, environment.BOOLEAN) }))) (RULE listParams (returns []interface{} l) (BLOCK (ALT (= list listParams) COMA expr {
+                                var arr []interface{}
+                                arr = append($list.l, $expr.e)
+                                $l = arr
+                            }) (ALT expr {
+            $l = []interface{}{}
+            $l = append($l, $expr.e)
+        }))) (RULE listArray (returns interfaces.Expression p) (BLOCK (ALT (= list listArray) COR_IZQ expr COR_DER { $p = expressions.NewArrayAccess($list.start.GetLine(), $list.start.GetColumn(), $list.p, $expr.e) }) (ALT ID { $p = expressions.NewLlamadoVar($ID.line, $ID.pos, $ID.text)})))))
+2023-09-02 23:54:24:601 grammar LogManager.java:25 after extract implicit lexer =(COMBINED_GRAMMAR SwiftGrammar (OPTIONS (= tokenVocab SwiftLexer)) (@ header {
+    import "Proyecto1_OLC2_2S2023_202101648/interfaces"
+    import "Proyecto1_OLC2_2S2023_202101648/Environment"
+    import "Proyecto1_OLC2_2S2023_202101648/expressions"
+    import "Proyecto1_OLC2_2S2023_202101648/instructions"
+    import "strings"
+}) (RULES (RULE s (returns []interface{} code) (BLOCK (ALT block EOF {   
+        $code = $block.blk
+    }))) (RULE block (returns []interface{} blk) (@ init {
+    $blk = []interface{}{}
+    var listInt []IInstructionContext
+  }) (BLOCK (ALT (+ (BLOCK (ALT (+= ins instruction)))) {
+        listInt = localctx.(*BlockContext).GetIns()
+        for _, e := range listInt {
+            $blk = append($blk, e.GetInst())
+        }
+    }))) (RULE instruction (returns interfaces.Instruction inst) (BLOCK (ALT printstmt { $inst = $printstmt.prnt}) (ALT ifstmt { $inst = $ifstmt.ifinst }) (ALT declarationstmt { $inst = $declarationstmt.dec }) (ALT asignationstmt { $inst = $asignationstmt.asig }))) (RULE printstmt (returns interfaces.Instruction prnt) (BLOCK (ALT PRINT PAR_IZQ expr PAR_DER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}))) (RULE blockelsif (returns []interface{} blkif) (@ init {
+    $blkif = []interface{}{}
+    var listIfs []IIfstmtContext
+    }) (BLOCK (ALT (+ (BLOCK (ALT (+= elseif ifstmt)))) {
+        listIfs = localctx.(*BlockelsifContext).GetElseif()
+        for _, e := range listIfs {
+            $blkif = append($blkif, e.GetIfinst())
+        }
+    }))) (RULE ifstmt (returns interfaces.Instruction ifinst) (BLOCK (ALT IF expr LLAVE_IZQ block LLAVE_DER { $ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }) (ALT IF expr LLAVE_IZQ (= ifblck block) LLAVE_DER ELSE LLAVE_IZQ (= elseblck block) LLAVE_DER {$ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifblck.blk, $elseblck.blk)}) (ALT IF expr LLAVE_IZQ (= ifblck block) LLAVE_DER ELSE blockelsif {$ifinst = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifblck.blk, $blockelsif.blkif)}))) (RULE declarationstmt (returns interfaces.Instruction dec) (BLOCK (ALT VAR ID DOSPUNTOS types IGUAL expr { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, $expr.e) }) (ALT VAR ID IGUAL expr { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true,environment.DEPENDIENTE, $expr.e) }) (ALT VAR ID DOSPUNTOS types CIERRAPREGUNTA { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, nil) }) (ALT LET ID DOSPUNTOS types IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false, $types.ty, $expr.e) }) (ALT LET ID IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false,environment.DEPENDIENTE, $expr.e) }))) (RULE asignationstmt interfaces.Instruction asig (BLOCK (ALT ID IGUAL expr { $asig = instructions.NewAsignacion($ID.line, $ID.pos, $ID.text, $expr.e) }))) (RULE types (returns environment.TipoExpresion ty) (BLOCK (ALT INT { $ty = environment.INTEGER }) (ALT FLOAT { $ty = environment.FLOAT }) (ALT STR { $ty = environment.STRING }) (ALT BOOL { $ty = environment.BOOLEAN }) (ALT COR_IZQ COR_DER { $ty = environment.ARRAY }))) (RULE expr (returns interfaces.Expression e) (BLOCK (ALT (= left expr) (= op (SET MULT DIV)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (SET SUM RES)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (SET MAYIG MAYOR)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (SET MENIG MENOR)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op (SET IG_IG DIFE)) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op AND) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT (= left expr) (= op OR) (= right expr) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT PAR_IZQ expr PAR_DER { $e = $expr.e }) (ALT (= list listArray) { $e = $list.p}) (ALT COR_IZQ listParams COR_DER { $e = expressions.NewArray($COR_IZQ.line, $COR_IZQ.pos, $listParams.l) }) (ALT NUMBER {
+        if (strings.Contains($NUMBER.text,".")){
+            num,err := strconv.ParseFloat($NUMBER.text, 64);
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.FLOAT)
+        }else{
+            num,err := strconv.Atoi($NUMBER.text)
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.INTEGER)
+        }
+    }) (ALT STRING {
+        str := $STRING.text
+        $e = expressions.NewPrimitive($STRING.line, $STRING.pos, str[1:len(str)-1],environment.STRING)
+    }) (ALT TRU { $e = expressions.NewPrimitive($TRU.line, $TRU.pos, true, environment.BOOLEAN) }) (ALT FAL { $e = expressions.NewPrimitive($FAL.line, $FAL.pos, false, environment.BOOLEAN) }))) (RULE listParams (returns []interface{} l) (BLOCK (ALT (= list listParams) COMA expr {
+                                var arr []interface{}
+                                arr = append($list.l, $expr.e)
+                                $l = arr
+                            }) (ALT expr {
+            $l = []interface{}{}
+            $l = append($l, $expr.e)
+        }))) (RULE listArray (returns interfaces.Expression p) (BLOCK (ALT (= list listArray) COR_IZQ expr COR_DER { $p = expressions.NewArrayAccess($list.start.GetLine(), $list.start.GetColumn(), $list.p, $expr.e) }) (ALT ID { $p = expressions.NewLlamadoVar($ID.line, $ID.pos, $ID.text)})))))
+2023-09-02 23:54:24:601 grammar LogManager.java:25 lexer =(LEXER_GRAMMAR SwiftGrammarLexer OPTIONS (@ header {
+    import "Proyecto1_OLC2_2S2023_202101648/interfaces"
+    import "Proyecto1_OLC2_2S2023_202101648/Environment"
+    import "Proyecto1_OLC2_2S2023_202101648/expressions"
+    import "Proyecto1_OLC2_2S2023_202101648/instructions"
+    import "strings"
+}) RULES)
+2023-09-02 23:54:24:646 left-recursion LogManager.java:25 expr returns [interfaces.Expression e]
+    :   ( {} PAR_IZQ<tokenIndex=474> expr<tokenIndex=476> PAR_DER<tokenIndex=478> { $e = $expr.e } 
+        | list=listArray<tokenIndex=486> { $e = $list.p} 
+        | COR_IZQ<tokenIndex=492> listParams<tokenIndex=494> COR_DER<tokenIndex=496> { $e = expressions.NewArray($COR_IZQ.line, $COR_IZQ.pos, $listParams.l) } 
+        | NUMBER<tokenIndex=502>                             
+    {
+        if (strings.Contains($NUMBER.text,".")){
+            num,err := strconv.ParseFloat($NUMBER.text, 64);
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.FLOAT)
+        }else{
+            num,err := strconv.Atoi($NUMBER.text)
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.INTEGER)
+        }
+    } 
+        | STRING<tokenIndex=508>
+    {
+        str := $STRING.text
+        $e = expressions.NewPrimitive($STRING.line, $STRING.pos, str[1:len(str)-1],environment.STRING)
+    } 
+        | TRU<tokenIndex=514> { $e = expressions.NewPrimitive($TRU.line, $TRU.pos, true, environment.BOOLEAN) } 
+        | FAL<tokenIndex=520> { $e = expressions.NewPrimitive($FAL.line, $FAL.pos, false, environment.BOOLEAN) } 
+        )
+        (
+          {p.Precpred(p.GetParserRuleContext(), 14)}?<p=14> op=(MULT<tokenIndex=349>|DIV<tokenIndex=351>) right=expr<tokenIndex=356,p=15> { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+                  | {p.Precpred(p.GetParserRuleContext(), 13)}?<p=13> op=(SUM<tokenIndex=369>|RES<tokenIndex=371>) right=expr<tokenIndex=376,p=14> { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+                  | {p.Precpred(p.GetParserRuleContext(), 12)}?<p=12> op=(MAYIG<tokenIndex=389>|MAYOR<tokenIndex=391>) right=expr<tokenIndex=396,p=13> { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+                  | {p.Precpred(p.GetParserRuleContext(), 11)}?<p=11> op=(MENIG<tokenIndex=409>|MENOR<tokenIndex=411>) right=expr<tokenIndex=416,p=12> { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+                  | {p.Precpred(p.GetParserRuleContext(), 10)}?<p=10> op=(IG_IG<tokenIndex=429>|DIFE<tokenIndex=431>) right=expr<tokenIndex=436,p=11> { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+                  | {p.Precpred(p.GetParserRuleContext(), 9)}?<p=9> op=AND<tokenIndex=448> right=expr<tokenIndex=452,p=10> { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+                  | {p.Precpred(p.GetParserRuleContext(), 8)}?<p=8> op=OR<tokenIndex=464> right=expr<tokenIndex=468,p=9> { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+        )*
+    ;
+2023-09-02 23:54:24:713 grammar LogManager.java:25 added: (RULE expr (returns interfaces.Expression e) (BLOCK (ALT (BLOCK (ALT {} (PAR_IZQ (ELEMENT_OPTIONS (= tokenIndex 474))) (expr (ELEMENT_OPTIONS (= tokenIndex 476))) (PAR_DER (ELEMENT_OPTIONS (= tokenIndex 478))) { $e = $expr.e }) (ALT (= list (listArray (ELEMENT_OPTIONS (= tokenIndex 486)))) { $e = $list.p}) (ALT (COR_IZQ (ELEMENT_OPTIONS (= tokenIndex 492))) (listParams (ELEMENT_OPTIONS (= tokenIndex 494))) (COR_DER (ELEMENT_OPTIONS (= tokenIndex 496))) { $e = expressions.NewArray($COR_IZQ.line, $COR_IZQ.pos, $listParams.l) }) (ALT (NUMBER (ELEMENT_OPTIONS (= tokenIndex 502))) {
+        if (strings.Contains($NUMBER.text,".")){
+            num,err := strconv.ParseFloat($NUMBER.text, 64);
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.FLOAT)
+        }else{
+            num,err := strconv.Atoi($NUMBER.text)
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.INTEGER)
+        }
+    }) (ALT (STRING (ELEMENT_OPTIONS (= tokenIndex 508))) {
+        str := $STRING.text
+        $e = expressions.NewPrimitive($STRING.line, $STRING.pos, str[1:len(str)-1],environment.STRING)
+    }) (ALT (TRU (ELEMENT_OPTIONS (= tokenIndex 514))) { $e = expressions.NewPrimitive($TRU.line, $TRU.pos, true, environment.BOOLEAN) }) (ALT (FAL (ELEMENT_OPTIONS (= tokenIndex 520))) { $e = expressions.NewPrimitive($FAL.line, $FAL.pos, false, environment.BOOLEAN) })) (* (BLOCK (ALT ({p.Precpred(p.GetParserRuleContext(), 14)}? (ELEMENT_OPTIONS (= p 14))) (= op (SET (MULT (ELEMENT_OPTIONS (= tokenIndex 349))) (DIV (ELEMENT_OPTIONS (= tokenIndex 351))))) (= right (expr (ELEMENT_OPTIONS (= tokenIndex 356) (= p 15)))) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT ({p.Precpred(p.GetParserRuleContext(), 13)}? (ELEMENT_OPTIONS (= p 13))) (= op (SET (SUM (ELEMENT_OPTIONS (= tokenIndex 369))) (RES (ELEMENT_OPTIONS (= tokenIndex 371))))) (= right (expr (ELEMENT_OPTIONS (= tokenIndex 376) (= p 14)))) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT ({p.Precpred(p.GetParserRuleContext(), 12)}? (ELEMENT_OPTIONS (= p 12))) (= op (SET (MAYIG (ELEMENT_OPTIONS (= tokenIndex 389))) (MAYOR (ELEMENT_OPTIONS (= tokenIndex 391))))) (= right (expr (ELEMENT_OPTIONS (= tokenIndex 396) (= p 13)))) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT ({p.Precpred(p.GetParserRuleContext(), 11)}? (ELEMENT_OPTIONS (= p 11))) (= op (SET (MENIG (ELEMENT_OPTIONS (= tokenIndex 409))) (MENOR (ELEMENT_OPTIONS (= tokenIndex 411))))) (= right (expr (ELEMENT_OPTIONS (= tokenIndex 416) (= p 12)))) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT ({p.Precpred(p.GetParserRuleContext(), 10)}? (ELEMENT_OPTIONS (= p 10))) (= op (SET (IG_IG (ELEMENT_OPTIONS (= tokenIndex 429))) (DIFE (ELEMENT_OPTIONS (= tokenIndex 431))))) (= right (expr (ELEMENT_OPTIONS (= tokenIndex 436) (= p 11)))) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT ({p.Precpred(p.GetParserRuleContext(), 9)}? (ELEMENT_OPTIONS (= p 9))) (= op (AND (ELEMENT_OPTIONS (= tokenIndex 448)))) (= right (expr (ELEMENT_OPTIONS (= tokenIndex 452) (= p 10)))) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }) (ALT ({p.Precpred(p.GetParserRuleContext(), 8)}? (ELEMENT_OPTIONS (= p 8))) (= op (OR (ELEMENT_OPTIONS (= tokenIndex 464)))) (= right (expr (ELEMENT_OPTIONS (= tokenIndex 468) (= p 9)))) { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }))))))
+2023-09-02 23:54:24:714 left-recursion LogManager.java:25 listParams returns [[]interface{} l]
+    :   ( {} expr<tokenIndex=545> {
+            $l = []interface{}{}
+            $l = append($l, $expr.e)
+        } 
+        )
+        (
+          {p.Precpred(p.GetParserRuleContext(), 2)}?<p=2> COMA<tokenIndex=537> expr<tokenIndex=539> {
+                                          var arr []interface{}
+                                          arr = append($list.l, $expr.e)
+                                          $l = arr
+                                      }
+        )*
+    ;
+2023-09-02 23:54:24:720 grammar LogManager.java:25 added: (RULE listParams (returns []interface{} l) (BLOCK (ALT (BLOCK (ALT {} (expr (ELEMENT_OPTIONS (= tokenIndex 545))) {
+            $l = []interface{}{}
+            $l = append($l, $expr.e)
+        })) (* (BLOCK (ALT ({p.Precpred(p.GetParserRuleContext(), 2)}? (ELEMENT_OPTIONS (= p 2))) (COMA (ELEMENT_OPTIONS (= tokenIndex 537))) (expr (ELEMENT_OPTIONS (= tokenIndex 539))) {
+                                          var arr []interface{}
+                                          arr = append($list.l, $expr.e)
+                                          $l = arr
+                                      }))))))
+2023-09-02 23:54:24:723 left-recursion LogManager.java:25 listArray returns [interfaces.Expression p]
+    :   ( {} ID<tokenIndex=574> { $p = expressions.NewLlamadoVar($ID.line, $ID.pos, $ID.text)} 
+        )
+        (
+          {p.Precpred(p.GetParserRuleContext(), 2)}?<p=2> COR_IZQ<tokenIndex=564> expr<tokenIndex=566> COR_DER<tokenIndex=568> { $p = expressions.NewArrayAccess($list.start.GetLine(), $list.start.GetColumn(), $list.p, $expr.e) }
+        )*
+    ;
+2023-09-02 23:54:24:732 grammar LogManager.java:25 added: (RULE listArray (returns interfaces.Expression p) (BLOCK (ALT (BLOCK (ALT {} (ID (ELEMENT_OPTIONS (= tokenIndex 574))) { $p = expressions.NewLlamadoVar($ID.line, $ID.pos, $ID.text)})) (* (BLOCK (ALT ({p.Precpred(p.GetParserRuleContext(), 2)}? (ELEMENT_OPTIONS (= p 2))) (COR_IZQ (ELEMENT_OPTIONS (= tokenIndex 564))) (expr (ELEMENT_OPTIONS (= tokenIndex 566))) (COR_DER (ELEMENT_OPTIONS (= tokenIndex 568))) { $p = expressions.NewArrayAccess($list.start.GetLine(), $list.start.GetColumn(), $list.p, $expr.e) }))))))
+2023-09-02 23:54:24:759 grammar LogManager.java:25 import INT=1
+2023-09-02 23:54:24:759 grammar LogManager.java:25 import FLOAT=2
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import BOOL=3
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import STR=4
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import TRU=5
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import FAL=6
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import PRINT=7
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import IF=8
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import ELSE=9
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import WHILE=10
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import VAR=11
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import LET=12
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import NUMBER=13
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import STRING=14
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import ID=15
+2023-09-02 23:54:24:760 grammar LogManager.java:25 import DIFE=16
+2023-09-02 23:54:24:761 grammar LogManager.java:25 import IG_IG=17
+2023-09-02 23:54:24:761 grammar LogManager.java:25 import NOT=18
+2023-09-02 23:54:24:761 grammar LogManager.java:25 import OR=19
+2023-09-02 23:54:24:761 grammar LogManager.java:25 import AND=20
+2023-09-02 23:54:24:761 grammar LogManager.java:25 import IGUAL=21
+2023-09-02 23:54:24:762 grammar LogManager.java:25 import MAYIG=22
+2023-09-02 23:54:24:762 grammar LogManager.java:25 import MENIG=23
+2023-09-02 23:54:24:762 grammar LogManager.java:25 import MAYOR=24
+2023-09-02 23:54:24:762 grammar LogManager.java:25 import MENOR=25
+2023-09-02 23:54:24:762 grammar LogManager.java:25 import MULT=26
+2023-09-02 23:54:24:762 grammar LogManager.java:25 import DIV=27
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import SUM=28
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import RES=29
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import PAR_IZQ=30
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import PAR_DER=31
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import LLAVE_IZQ=32
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import LLAVE_DER=33
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import DOSPUNTOS=34
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import COR_IZQ=35
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import COR_DER=36
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import COMA=37
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import CIERRAPREGUNTA=38
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import WHITESPACE=39
+2023-09-02 23:54:24:763 grammar LogManager.java:25 import COMMENT=40
+2023-09-02 23:54:24:766 grammar LogManager.java:25 import LINE_COMMENT=41
+2023-09-02 23:54:24:766 grammar LogManager.java:25 import 'Int'=1
+2023-09-02 23:54:24:766 grammar LogManager.java:25 import 'Float'=2
+2023-09-02 23:54:24:767 grammar LogManager.java:25 import 'Bool'=3
+2023-09-02 23:54:24:767 grammar LogManager.java:25 import 'String'=4
+2023-09-02 23:54:24:767 grammar LogManager.java:25 import 'true'=5
+2023-09-02 23:54:24:767 grammar LogManager.java:25 import 'false'=6
+2023-09-02 23:54:24:767 grammar LogManager.java:25 import 'print'=7
+2023-09-02 23:54:24:767 grammar LogManager.java:25 import 'if'=8
+2023-09-02 23:54:24:767 grammar LogManager.java:25 import 'else'=9
+2023-09-02 23:54:24:767 grammar LogManager.java:25 import 'while'=10
+2023-09-02 23:54:24:767 grammar LogManager.java:25 import 'var'=11
+2023-09-02 23:54:24:768 grammar LogManager.java:25 import 'let'=12
+2023-09-02 23:54:24:768 grammar LogManager.java:25 import '!='=16
+2023-09-02 23:54:24:769 grammar LogManager.java:25 import '=='=17
+2023-09-02 23:54:24:769 grammar LogManager.java:25 import '!'=18
+2023-09-02 23:54:24:769 grammar LogManager.java:25 import '||'=19
+2023-09-02 23:54:24:769 grammar LogManager.java:25 import '&&'=20
+2023-09-02 23:54:24:769 grammar LogManager.java:25 import '='=21
+2023-09-02 23:54:24:769 grammar LogManager.java:25 import '>='=22
+2023-09-02 23:54:24:769 grammar LogManager.java:25 import '<='=23
+2023-09-02 23:54:24:769 grammar LogManager.java:25 import '>'=24
+2023-09-02 23:54:24:769 grammar LogManager.java:25 import '<'=25
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import '*'=26
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import '/'=27
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import '+'=28
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import '-'=29
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import '('=30
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import ')'=31
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import '{'=32
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import '}'=33
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import ':'=34
+2023-09-02 23:54:24:770 grammar LogManager.java:25 import '['=35
+2023-09-02 23:54:24:772 grammar LogManager.java:25 import ']'=36
+2023-09-02 23:54:24:772 grammar LogManager.java:25 import ','=37
+2023-09-02 23:54:24:772 grammar LogManager.java:25 import '?'=38
+2023-09-02 23:54:24:772 grammar LogManager.java:25 tokens={INT=1, FLOAT=2, BOOL=3, STR=4, TRU=5, FAL=6, PRINT=7, IF=8, ELSE=9, WHILE=10, VAR=11, LET=12, NUMBER=13, STRING=14, ID=15, DIFE=16, IG_IG=17, NOT=18, OR=19, AND=20, IGUAL=21, MAYIG=22, MENIG=23, MAYOR=24, MENOR=25, MULT=26, DIV=27, SUM=28, RES=29, PAR_IZQ=30, PAR_DER=31, LLAVE_IZQ=32, LLAVE_DER=33, DOSPUNTOS=34, COR_IZQ=35, COR_DER=36, COMA=37, CIERRAPREGUNTA=38, WHITESPACE=39, COMMENT=40, LINE_COMMENT=41, 'Int'=1, 'Float'=2, 'Bool'=3, 'String'=4, 'true'=5, 'false'=6, 'print'=7, 'if'=8, 'else'=9, 'while'=10, 'var'=11, 'let'=12, '!='=16, '=='=17, '!'=18, '||'=19, '&&'=20, '='=21, '>='=22, '<='=23, '>'=24, '<'=25, '*'=26, '/'=27, '+'=28, '-'=29, '('=30, ')'=31, '{'=32, '}'=33, ':'=34, '['=35, ']'=36, ','=37, '?'=38}
+2023-09-02 23:54:24:773 semantics LogManager.java:25 tokens={EOF=-1, INT=1, FLOAT=2, BOOL=3, STR=4, TRU=5, FAL=6, PRINT=7, IF=8, ELSE=9, WHILE=10, VAR=11, LET=12, NUMBER=13, STRING=14, ID=15, DIFE=16, IG_IG=17, NOT=18, OR=19, AND=20, IGUAL=21, MAYIG=22, MENIG=23, MAYOR=24, MENOR=25, MULT=26, DIV=27, SUM=28, RES=29, PAR_IZQ=30, PAR_DER=31, LLAVE_IZQ=32, LLAVE_DER=33, DOSPUNTOS=34, COR_IZQ=35, COR_DER=36, COMA=37, CIERRAPREGUNTA=38, WHITESPACE=39, COMMENT=40, LINE_COMMENT=41}
+2023-09-02 23:54:24:773 semantics LogManager.java:25 strings={'Int'=1, 'Float'=2, 'Bool'=3, 'String'=4, 'true'=5, 'false'=6, 'print'=7, 'if'=8, 'else'=9, 'while'=10, 'var'=11, 'let'=12, '!='=16, '=='=17, '!'=18, '||'=19, '&&'=20, '='=21, '>='=22, '<='=23, '>'=24, '<'=25, '*'=26, '/'=27, '+'=28, '-'=29, '('=30, ')'=31, '{'=32, '}'=33, ':'=34, '['=35, ']'=36, ','=37, '?'=38}

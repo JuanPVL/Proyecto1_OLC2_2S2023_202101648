@@ -29,5 +29,6 @@ func (p Array) Ejecutar(ast *environment.AST,env interface{}) environment.Symbol
 		Col: p.Col,
 		Tipo: environment.ARRAY,
 		Valor: tempExp,
+		Mutable: true,
 	}
 }

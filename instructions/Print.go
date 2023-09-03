@@ -9,16 +9,19 @@ import(
 type Print struct {
 	Lin 		int
 	Col 		int
-	Valor 		interface{}
+	Valor 		[]interface{}
 }
 
-func NewPrint(lin int, col int, val interface{}) Print {
+func NewPrint(lin int, col int, val []interface{}) Print {
 	return Print{lin,col,val}
 }
 
 func (p Print) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	valorAImprimir := p.Valor.(interfaces.Expression).Ejecutar(ast,env)
-	consoleOut := fmt.Sprintf("%v",valorAImprimir.Valor)
+	var consoleOut string
+	for _, valor := range p.Valor {
+	value := valor.(interfaces.Expression).Ejecutar(ast,env)
+	consoleOut = consoleOut + " "+fmt.Sprintf("%v",value.Valor)
+	}
 	ast.SetPrint(consoleOut + "\n")
 	return nil
 }

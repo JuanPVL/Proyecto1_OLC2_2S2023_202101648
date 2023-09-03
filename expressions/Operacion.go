@@ -38,22 +38,24 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 
 	var op1, op2 environment.Symbol
 	op1 = o.Operador_izq.Ejecutar(ast,env)
-	op2 = o.Operador_der.Ejecutar(ast,env)
+	if o.Operador_der != nil {
+		op2 = o.Operador_der.Ejecutar(ast,env)
+	}
 	switch o.Operador {
 		case "+":
 			{
 				dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 
 				if dominante == environment.INTEGER {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) + op2.Valor.(int)}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) + op2.Valor.(int), Mutable: true}
 				} else if dominante == environment.FLOAT {
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 + val2}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 + val2,Mutable: true}
 				} else if dominante == environment.STRING {
 					r1 := fmt.Sprintf("%v", op1.Valor)
 					r2 := fmt.Sprintf("%v", op2.Valor)
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 + r2}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 + r2,Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la suma")
 				}
@@ -63,11 +65,11 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 
 				if dominante == environment.INTEGER {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) - op2.Valor.(int)}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) - op2.Valor.(int),Mutable: true}
 				} else if dominante == environment.FLOAT {
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 - val2}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 - val2,Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la resta")
 				}
@@ -76,11 +78,11 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			{
 				dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 				if dominante == environment.INTEGER {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) * op2.Valor.(int)}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) * op2.Valor.(int),Mutable: true}
 				} else if dominante == environment.FLOAT {
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 * val2}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 * val2,Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la multiplicacion")
 				}
@@ -90,7 +92,7 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 				if dominante == environment.INTEGER {
 					if op2.Valor.(int) != 0 {
-						return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) / op2.Valor.(int)}
+						return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) / op2.Valor.(int),Mutable: true}
 					} else {
 						ast.SetErrors("No puede dividir entre cero")
 					}
@@ -99,7 +101,7 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 					if val2 != 0 {
-						return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 / val2}
+						return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 / val2,Mutable: true}
 					} else {
 						ast.SetErrors("No puede dividir entre cero")
 					}
@@ -107,15 +109,39 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					ast.SetErrors("Error de tipos en la division")
 				}
 			}
+		case "%":
+			{
+				dominante = tabla_dominante[op1.Tipo][op2.Tipo]
+				if dominante == environment.INTEGER {
+					if op2.Valor.(int) != 0 {
+						return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) % op2.Valor.(int),Mutable: true}
+					} else {
+						ast.SetErrors("No puede dividir entre cero")
+					}
+				} else {
+					ast.SetErrors("Error de tipos en el modulo")
+				}
+			}
+		case "UNARIO":
+			{
+				if op1.Tipo == environment.INTEGER {
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.INTEGER, Valor: -op1.Valor.(int),Mutable: true}
+				} else if op1.Tipo == environment.FLOAT {
+					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.FLOAT, Valor: -val1,Mutable: true}
+				} else {
+					ast.SetErrors("Error de tipos en el unario")
+				}
+			}
 		case "<":
 			{
 				dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 				if dominante == environment.INTEGER {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) < op2.Valor.(int)}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) < op2.Valor.(int),Mutable: true}
 				} else if dominante == environment.FLOAT {
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 < val2}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 < val2,Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la comparacion menor que")
 				}
@@ -124,11 +150,11 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			{
 				dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 				if dominante == environment.INTEGER {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) > op2.Valor.(int)}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) > op2.Valor.(int),Mutable: true}
 				} else if dominante == environment.FLOAT {
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 > val2}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 > val2,Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la comparacion mayor que")
 				}
@@ -137,11 +163,11 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			{
 				dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 				if dominante == environment.INTEGER {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) <= op2.Valor.(int)}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) <= op2.Valor.(int),Mutable: true}
 				} else if dominante == environment.FLOAT {
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 <= val2}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 <= val2,Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la comparacion menor igual que")
 				}
@@ -150,11 +176,11 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			{
 				dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 				if dominante == environment.INTEGER {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) >= op2.Valor.(int)}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) >= op2.Valor.(int),Mutable: true}
 				} else if dominante == environment.FLOAT {
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 >= val2}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 >= val2,Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la comparacion mayor igual que")
 				}
@@ -162,7 +188,7 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 		case "==":
 			{
 				if op1.Tipo == op2.Tipo {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor == op2.Valor}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor == op2.Valor,Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la comparacion igual que")
 				}
@@ -170,7 +196,7 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 		case "!=":
 			{
 				if op1.Tipo == op2.Tipo {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor != op2.Valor}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor != op2.Valor,Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la comparacion diferente que")
 				}
@@ -178,7 +204,7 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 		case "&&":
 			{
 				if(op1.Tipo == environment.BOOLEAN && op2.Tipo == environment.BOOLEAN){
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) && op2.Valor.(bool)}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) && op2.Valor.(bool),Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la comparacion AND")
 				}
@@ -186,13 +212,21 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 		case "||":
 			{
 				if(op1.Tipo == environment.BOOLEAN && op2.Tipo == environment.BOOLEAN){
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) || op2.Valor.(bool)}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) || op2.Valor.(bool),Mutable: true}
 				} else {
 					ast.SetErrors("Error de tipos en la comparacion OR")
+				}
+			}
+		case "!":
+			{
+				if(op1.Tipo == environment.BOOLEAN){
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: !op1.Valor.(bool),Mutable: true}
+				} else {
+					ast.SetErrors("Error de tipos en la comparacion NOT")
 				}
 			}
 		}
 		
 		var result interface{}
-		return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.NULL, Valor: result}
+		return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.NULL, Valor: result,Mutable: true}
 }

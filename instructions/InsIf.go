@@ -10,10 +10,11 @@ type If struct {
 	Col 		int
 	Condicion 	interfaces.Expression
 	Bloque 		[]interface{}
+	ElseBloque 	[]interface{}
 }
 
-func NewIf(lin int, col int, condition interfaces.Expression, bloque []interface{}) If {
-	ifInstr := If{lin, col, condition, bloque}
+func NewIf(lin int, col int, condition interfaces.Expression, bloque []interface{}, elsebloque []interface{}) If {
+	ifInstr := If{lin, col, condition, bloque, elsebloque}
 	return ifInstr
 }
 
@@ -34,7 +35,12 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		}
 		return nil
 	} else {
-		//completar para else
+		var elseEnv environment.Environment
+		elseEnv = environment.NewEnvironment(env.(environment.Environment),"ELSE")
+		for _, inst := range p.ElseBloque {
+			inst.(interfaces.Instruction).Ejecutar(ast,elseEnv)
+		}
+		return nil
 	}
 	return nil
 }

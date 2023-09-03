@@ -27,12 +27,16 @@ func (p While) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 			ast.SetErrors("La condicion no es booleana")
 			return nil
 		}
-
-		var whileEnv environment.Environment
-		whileEnv = environment.NewEnvironment(env.(environment.Environment),"WHILE")
-
-		for _, instr := range p.Bloque {
-			instr.(interfaces.Instruction).Ejecutar(ast,whileEnv)
-		}
+		if condicion.Valor == true {
+			var whileEnv environment.Environment
+			whileEnv = environment.NewEnvironment(env.(environment.Environment),"WHILE")
+	
+			for _, instr := range p.Bloque {
+				instr.(interfaces.Instruction).Ejecutar(ast,whileEnv)
+			}
+		} else {
+			break
+		}	
 	}
+	return nil
 }
