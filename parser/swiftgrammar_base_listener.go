@@ -86,6 +86,12 @@ func (s *BaseSwiftGrammarListener) EnterExpr(ctx *ExprContext) {}
 // ExitExpr is called when production expr is exited.
 func (s *BaseSwiftGrammarListener) ExitExpr(ctx *ExprContext) {}
 
+// EnterConversionstmt is called when production conversionstmt is entered.
+func (s *BaseSwiftGrammarListener) EnterConversionstmt(ctx *ConversionstmtContext) {}
+
+// ExitConversionstmt is called when production conversionstmt is exited.
+func (s *BaseSwiftGrammarListener) ExitConversionstmt(ctx *ConversionstmtContext) {}
+
 // EnterListParams is called when production listParams is entered.
 func (s *BaseSwiftGrammarListener) EnterListParams(ctx *ListParamsContext) {}
 

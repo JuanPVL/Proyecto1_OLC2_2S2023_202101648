@@ -40,6 +40,9 @@ type SwiftGrammarListener interface {
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
 
+	// EnterConversionstmt is called when entering the conversionstmt production.
+	EnterConversionstmt(c *ConversionstmtContext)
+
 	// EnterListParams is called when entering the listParams production.
 	EnterListParams(c *ListParamsContext)
 
@@ -78,6 +81,9 @@ type SwiftGrammarListener interface {
 
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)
+
+	// ExitConversionstmt is called when exiting the conversionstmt production.
+	ExitConversionstmt(c *ConversionstmtContext)
 
 	// ExitListParams is called when exiting the listParams production.
 	ExitListParams(c *ListParamsContext)

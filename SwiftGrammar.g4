@@ -41,6 +41,7 @@ instruction returns [interfaces.Instruction inst]
 | declarationstmt { $inst = $declarationstmt.dec }
 | asignationstmt { $inst = $asignationstmt.asig }
 | whilestmt { $inst = $whilestmt.whileinst }
+| forstmt { $inst = $forstmt.forinst }
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -72,6 +73,10 @@ whilestmt returns [interfaces.Instruction whileinst]
 : WHILE expr LLAVE_IZQ block LLAVE_DER { $whileinst = instructions.NewWhile($WHILE.line, $WHILE.pos, $expr.e, $block.blk) }
 ;
 
+forsmt returns [interfaces.Instruction forinst]
+: FOR ID IN exprFor LLAVE_IZQ block LLAVE_DER {}
+;
+
 declarationstmt returns [interfaces.Instruction dec]
 : VAR ID DOSPUNTOS types IGUAL expr  { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, $expr.e) }
 | VAR ID IGUAL expr { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true,environment.DEPENDIENTE, $expr.e) }
@@ -92,6 +97,11 @@ types returns[environment.TipoExpresion ty]
 | COR_IZQ COR_DER { $ty = environment.ARRAY }
 ;
 
+exprFor returns[interfaces.Expression e]
+:range1=expr PUNTO PUNTO PUNTO range2=expr {}
+|expr {$e = $expr.e}
+;
+
 expr returns [interfaces.Expression e]
 : RES left=expr { $e = expressions.NewOperation($RES.line, $RES.pos, $left.e, "UNARIO", nil) }
 | left=expr op=(MULT|DIV|MOD) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
@@ -103,6 +113,7 @@ expr returns [interfaces.Expression e]
 | left=expr op=AND right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | PAR_IZQ expr PAR_DER { $e = $expr.e }
+| conversionstmt { $e = $conversionstmt.conv }
 | list=listArray { $e = $list.p}
 | COR_IZQ listParams COR_DER { $e = expressions.NewArray($COR_IZQ.line, $COR_IZQ.pos, $listParams.l) }
 | NUMBER                             
@@ -128,6 +139,13 @@ expr returns [interfaces.Expression e]
     }                        
 | TRU { $e = expressions.NewPrimitive($TRU.line, $TRU.pos, true, environment.BOOLEAN) }
 | FAL { $e = expressions.NewPrimitive($FAL.line, $FAL.pos, false, environment.BOOLEAN) }
+| NIL { $e = expressions.NewPrimitive($NIL.line, $NIL.pos, nil, environment.NULL) }
+;
+
+conversionstmt returns [interfaces.Expression conv]
+: INT PAR_IZQ expr PAR_DER { $conv = expressions.NewToInt($INT.line, $INT.pos, $expr.e) }
+| FLOAT PAR_IZQ expr PAR_DER { $conv = expressions.NewToFloat($FLOAT.line, $FLOAT.pos, $expr.e) }
+| STR PAR_IZQ expr PAR_DER { $conv = expressions.NewToString($STR.line, $STR.pos, $expr.e) }
 ;
 
 listParams returns[[]interface{} l]

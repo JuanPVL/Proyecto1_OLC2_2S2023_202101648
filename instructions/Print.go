@@ -19,8 +19,12 @@ func NewPrint(lin int, col int, val []interface{}) Print {
 func (p Print) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	var consoleOut string
 	for _, valor := range p.Valor {
-	value := valor.(interfaces.Expression).Ejecutar(ast,env)
-	consoleOut = consoleOut + " "+fmt.Sprintf("%v",value.Valor)
+		value := valor.(interfaces.Expression).Ejecutar(ast,env)
+		if value.Tipo == environment.FLOAT{
+			consoleOut = consoleOut + " " + fmt.Sprintf("%.3f",value.Valor)
+		} else {
+			consoleOut = consoleOut + " "+fmt.Sprintf("%v",value.Valor)
+		}
 	}
 	ast.SetPrint(consoleOut + "\n")
 	return nil

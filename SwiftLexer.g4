@@ -14,8 +14,11 @@ PRINT: 'print';
 IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
+FOR: 'for';
+IN: 'in';
 VAR: 'var';
 LET: 'let';
+NIL: 'nil';
 
 //primitivos
 NUMBER: [0-9]+ ('.' [0-9]+)?;
@@ -47,6 +50,7 @@ COR_IZQ: '[';
 COR_DER: ']';
 COMA: ',';
 CIERRAPREGUNTA: '?';
+PUNTO: '.';
 
 //Saltar
 WHITESPACE: [ \\\r\n\t]+ -> skip;
