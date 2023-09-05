@@ -36,10 +36,10 @@ block returns [[]interface{} blk]
 ;
 
 instruction returns [interfaces.Instruction inst]
-: printstmt { $inst = $printstmt.prnt}
+: printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
 | ifstmt { $inst = $ifstmt.ifinst }
-| declarationstmt { $inst = $declarationstmt.dec }
-| asignationstmt { $inst = $asignationstmt.asig }
+| declarationstmt (PUNTOCOMA)? { $inst = $declarationstmt.dec }
+| asignationstmt (PUNTOCOMA)? { $inst = $asignationstmt.asig }
 | whilestmt { $inst = $whilestmt.whileinst }
 | forstmt { $inst = $forstmt.forinst }
 ;
@@ -73,7 +73,7 @@ whilestmt returns [interfaces.Instruction whileinst]
 : WHILE expr LLAVE_IZQ block LLAVE_DER { $whileinst = instructions.NewWhile($WHILE.line, $WHILE.pos, $expr.e, $block.blk) }
 ;
 
-forsmt returns [interfaces.Instruction forinst]
+forstmt returns [interfaces.Instruction forinst]
 : FOR ID IN exprFor LLAVE_IZQ block LLAVE_DER {}
 ;
 
@@ -87,6 +87,7 @@ declarationstmt returns [interfaces.Instruction dec]
 
 asignationstmt returns [interfaces.Instruction asig]
 : ID IGUAL expr { $asig = instructions.NewAsignacion($ID.line, $ID.pos, $ID.text, $expr.e) }
+| ID op=(SUM|RES) IGUAL expr {$asig = instructions.NewOperacionAsignacion($ID.line, $ID.pos, $ID.text, $expr.e, $op.text)}
 ;
 
 types returns[environment.TipoExpresion ty]

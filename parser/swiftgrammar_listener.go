@@ -28,6 +28,9 @@ type SwiftGrammarListener interface {
 	// EnterWhilestmt is called when entering the whilestmt production.
 	EnterWhilestmt(c *WhilestmtContext)
 
+	// EnterForstmt is called when entering the forstmt production.
+	EnterForstmt(c *ForstmtContext)
+
 	// EnterDeclarationstmt is called when entering the declarationstmt production.
 	EnterDeclarationstmt(c *DeclarationstmtContext)
 
@@ -36,6 +39,9 @@ type SwiftGrammarListener interface {
 
 	// EnterTypes is called when entering the types production.
 	EnterTypes(c *TypesContext)
+
+	// EnterExprFor is called when entering the exprFor production.
+	EnterExprFor(c *ExprForContext)
 
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
@@ -70,6 +76,9 @@ type SwiftGrammarListener interface {
 	// ExitWhilestmt is called when exiting the whilestmt production.
 	ExitWhilestmt(c *WhilestmtContext)
 
+	// ExitForstmt is called when exiting the forstmt production.
+	ExitForstmt(c *ForstmtContext)
+
 	// ExitDeclarationstmt is called when exiting the declarationstmt production.
 	ExitDeclarationstmt(c *DeclarationstmtContext)
 
@@ -78,6 +87,9 @@ type SwiftGrammarListener interface {
 
 	// ExitTypes is called when exiting the types production.
 	ExitTypes(c *TypesContext)
+
+	// ExitExprFor is called when exiting the exprFor production.
+	ExitExprFor(c *ExprForContext)
 
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)

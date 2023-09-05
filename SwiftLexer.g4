@@ -50,6 +50,7 @@ COR_IZQ: '[';
 COR_DER: ']';
 COMA: ',';
 CIERRAPREGUNTA: '?';
+PUNTOCOMA: ';';
 PUNTO: '.';
 
 //Saltar

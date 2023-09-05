@@ -25,13 +25,13 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 
 	tabla_dominante := [5][5]environment.TipoExpresion{
 		// INT						FLOAT				STRING			BOOLEAN					NULL	
-		{environment.INTEGER, environment.FLOAT, environment.STRING, environment.BOOLEAN, environment.NULL},
+		{environment.INTEGER, environment.FLOAT, environment.NULL, environment.NULL, environment.NULL},
 		//FlOAT
-		{environment.FLOAT, environment.FLOAT, environment.STRING, environment.NULL, environment.NULL},
+		{environment.FLOAT, environment.FLOAT, environment.NULL, environment.NULL, environment.NULL},
 		//STRING
-		{environment.STRING, environment.STRING, environment.STRING, environment.STRING, environment.NULL},
+		{environment.NULL, environment.NULL, environment.STRING, environment.NULL, environment.NULL},
 		//BOOLEAN
-		{environment.BOOLEAN, environment.NULL, environment.STRING, environment.BOOLEAN, environment.NULL},
+		{environment.NULL, environment.NULL, environment.NULL, environment.BOOLEAN, environment.NULL},
 		//NULL
 		{environment.NULL, environment.NULL, environment.NULL, environment.NULL, environment.NULL},
 	}

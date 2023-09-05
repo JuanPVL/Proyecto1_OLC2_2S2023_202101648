@@ -7,7 +7,7 @@ function ColorSchemesExample() {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">TypeWise</Navbar.Brand>
+          <Navbar.Brand href="#home">T-Swift</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="#home">Archivos</Nav.Link>
             <Nav.Link href="#features">Features</Nav.Link>

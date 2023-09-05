@@ -17,5 +17,5 @@ func NewForRange(lin int, col int, r1 interfaces.Expression, r2 interfaces.Expre
 }
 
 func (p ForRange) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
-	
+	return environment.Symbol{}
 }
