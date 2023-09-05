@@ -53,11 +53,13 @@ func handleInterpreter(c *fiber.Ctx) error {
 		inst.(interfaces.Instruction).Ejecutar(&Ast, globalEnv)
 	}
 	var ConsoleOut = ""
-	if Ast.GetErrors() == "" {
-		ConsoleOut = Ast.GetPrint()
-	} else {
+	if Ast.GetErrors() != "" {
 		ConsoleOut = Ast.GetErrors()
-	}
+		
+	} 
+	
+	ConsoleOut += Ast.GetPrint()
+	
 	response := Resp{
 		Output:  ConsoleOut,
 		Flag:    true,

@@ -18,13 +18,13 @@ func NewIf(lin int, col int, condition interfaces.Expression, bloque []interface
 	return ifInstr
 }
 
-func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (p If) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 	var condicion environment.Symbol
 	condicion = p.Condicion.Ejecutar(ast,env)
 
 	if condicion.Tipo != environment.BOOLEAN {
 		ast.SetErrors("La condicion no es booleana")
-		return nil
+		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 	}
 
 	if condicion.Valor == true {
@@ -33,15 +33,15 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		for _, inst := range p.Bloque {
 			inst.(interfaces.Instruction).Ejecutar(ast,ifEnv)
 		}
-		return nil
+		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 	} else {
 		var elseEnv environment.Environment
 		elseEnv = environment.NewEnvironment(env.(environment.Environment),"ELSE")
 		for _, inst := range p.ElseBloque {
 			inst.(interfaces.Instruction).Ejecutar(ast,elseEnv)
 		}
-		return nil
+		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 	}
-	return nil
+	return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 }
 

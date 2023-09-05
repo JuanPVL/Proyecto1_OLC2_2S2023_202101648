@@ -42,6 +42,7 @@ instruction returns [interfaces.Instruction inst]
 | asignationstmt (PUNTOCOMA)? { $inst = $asignationstmt.asig }
 | whilestmt { $inst = $whilestmt.whileinst }
 | forstmt { $inst = $forstmt.forinst }
+| BREAK (PUNTOCOMA)? {$inst = instructions.NewBreak($BREAK.line, $BREAK.pos)}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -74,7 +75,7 @@ whilestmt returns [interfaces.Instruction whileinst]
 ;
 
 forstmt returns [interfaces.Instruction forinst]
-: FOR ID IN exprFor LLAVE_IZQ block LLAVE_DER {}
+: FOR ID IN exprFor LLAVE_IZQ block LLAVE_DER {$forinst = instructions.NewFor($FOR.line, $FOR.pos, $ID.text, $exprFor.e, $block.blk)}
 ;
 
 declarationstmt returns [interfaces.Instruction dec]
@@ -99,7 +100,7 @@ types returns[environment.TipoExpresion ty]
 ;
 
 exprFor returns[interfaces.Expression e]
-:range1=expr PUNTO PUNTO PUNTO range2=expr {}
+:range1=expr PUNTO PUNTO PUNTO range2=expr {$e = expressions.NewForRange($range1.start.GetLine(), $range1.start.GetColumn(), $range1.e, $range2.e)}
 |expr {$e = $expr.e}
 ;
 

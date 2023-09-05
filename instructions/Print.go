@@ -16,17 +16,17 @@ func NewPrint(lin int, col int, val []interface{}) Print {
 	return Print{lin,col,val}
 }
 
-func (p Print) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (p Print) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 	var consoleOut string
 	for _, valor := range p.Valor {
 		value := valor.(interfaces.Expression).Ejecutar(ast,env)
 		if value.Tipo == environment.FLOAT{
-			consoleOut = consoleOut + " " + fmt.Sprintf("%.3f",value.Valor)
+			consoleOut = consoleOut + " " + fmt.Sprintf("%.4f",value.Valor)
 		} else {
 			consoleOut = consoleOut + " "+fmt.Sprintf("%v",value.Valor)
 		}
 	}
 	ast.SetPrint(consoleOut + "\n")
-	return nil
+	return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true} 
 }
 

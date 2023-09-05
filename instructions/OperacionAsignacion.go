@@ -18,7 +18,7 @@ func NewOperacionAsignacion(lin int, col int, id string, val interfaces.Expressi
 	return OperacionAsignacion{lin,col,id,val,op}
 }
 
-func (p OperacionAsignacion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (p OperacionAsignacion) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 	var dominante environment.TipoExpresion
 
 	tabla_dominante := [5][5]environment.TipoExpresion{

@@ -6,4 +6,7 @@ type Symbol struct {
 	Tipo TipoExpresion
 	Valor interface{}
 	Mutable bool
+	BreakFlag bool
+	ContinueFlag bool
+	ReturnFlag bool
 }

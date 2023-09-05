@@ -17,7 +17,7 @@ func NewAsignacion(lin int, col int,id string, val interfaces.Expression) Asigna
 	return instr
 }
 
-func (va Asignacion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (va Asignacion) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 	var result environment.Symbol
 	result = va.Expresion.Ejecutar(ast,env)
 	env.(environment.Environment).SetVariable(va.Id, result)

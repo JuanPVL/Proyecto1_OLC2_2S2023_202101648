@@ -19,6 +19,7 @@ IN: 'in';
 VAR: 'var';
 LET: 'let';
 NIL: 'nil';
+BREAK: 'break';
 
 //primitivos
 NUMBER: [0-9]+ ('.' [0-9]+)?;

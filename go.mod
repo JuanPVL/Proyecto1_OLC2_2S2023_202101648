@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
+	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/gofiber/fiber/v2 v2.48.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/klauspost/compress v1.16.3 // indirect

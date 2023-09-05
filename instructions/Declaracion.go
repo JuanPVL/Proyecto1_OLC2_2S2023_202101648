@@ -19,7 +19,7 @@ func NewDeclaracion(lin int, col int,id string, mut bool, tipo environment.TipoE
 	return instr
 }
 
-func (va Declaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (va Declaracion) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 
 	if va.Expresion == nil && va.Mutable == true {
 		env.(environment.Environment).SaveVariable(va.Id, environment.Symbol{Lin: va.Lin, Col: va.Col, Tipo: va.Tipo, Valor: nil, Mutable: va.Mutable})
@@ -42,7 +42,7 @@ func (va Declaracion) Ejecutar(ast *environment.AST, env interface{}) interface{
 		}
 		//return nil
 	}
-	return nil	
+	return environment.Symbol{Lin: va.Lin, Col: va.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 } 
 
 func (va Declaracion) ArrayValidation(result environment.Symbol) bool {
