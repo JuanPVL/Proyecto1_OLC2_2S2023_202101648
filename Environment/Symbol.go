@@ -9,4 +9,6 @@ type Symbol struct {
 	BreakFlag bool
 	ContinueFlag bool
 	ReturnFlag bool
+	ArrayTipo TipoExpresion
+	VectorTipo TipoExpresion
 }

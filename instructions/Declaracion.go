@@ -3,6 +3,7 @@ package instructions
 import(
 	"Proyecto1_OLC2_2S2023_202101648/Environment"
 	"Proyecto1_OLC2_2S2023_202101648/interfaces"
+	"strconv"
 )
 
 type Declaracion struct {
@@ -22,23 +23,27 @@ func NewDeclaracion(lin int, col int,id string, mut bool, tipo environment.TipoE
 func (va Declaracion) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 
 	if va.Expresion == nil && va.Mutable == true {
-		env.(environment.Environment).SaveVariable(va.Id, environment.Symbol{Lin: va.Lin, Col: va.Col, Tipo: va.Tipo, Valor: nil, Mutable: va.Mutable})
+		env.(environment.Environment).SaveVariable(va.Id, environment.Symbol{Lin: va.Lin, Col: va.Col, Tipo: va.Tipo, Valor: nil, Mutable: va.Mutable},ast)
 	} else {
 		var result environment.Symbol
 		result = va.Expresion.Ejecutar(ast,env)
 		result.Mutable = va.Mutable
 		if result.Tipo == environment.ARRAY {
 			if va.ArrayValidation(result) {
-				env.(environment.Environment).SaveVariable(va.Id, result)
+				env.(environment.Environment).SaveVariable(va.Id, result,ast)
 			} else {
-				ast.SetErrors("Estructura de array no valida")
+				linea := strconv.Itoa(va.Lin)
+				columna := strconv.Itoa(va.Col)
+				ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "El arreglo no es valido", Ambito: env.(environment.Environment).Id})
 			}
 		} else if result.Tipo == va.Tipo {
-			env.(environment.Environment).SaveVariable(va.Id, result)
+			env.(environment.Environment).SaveVariable(va.Id, result,ast)
 		} else if va.Tipo == environment.DEPENDIENTE {
-			env.(environment.Environment).SaveVariable(va.Id, result)
+			env.(environment.Environment).SaveVariable(va.Id, result,ast)
 		} else {
-			ast.SetErrors("Tipos de datos no coinciden")
+			linea := strconv.Itoa(va.Lin)
+			columna := strconv.Itoa(va.Col)
+			ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "El tipo de dato no es valido", Ambito: env.(environment.Environment).Id})
 		}
 		//return nil
 	}

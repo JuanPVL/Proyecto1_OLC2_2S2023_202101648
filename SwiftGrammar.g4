@@ -43,6 +43,7 @@ instruction returns [interfaces.Instruction inst]
 | whilestmt { $inst = $whilestmt.whileinst }
 | forstmt { $inst = $forstmt.forinst }
 | BREAK (PUNTOCOMA)? {$inst = instructions.NewBreak($BREAK.line, $BREAK.pos)}
+| CONTINUE (PUNTOCOMA)? {$inst = instructions.NewContinue($CONTINUE.line, $CONTINUE.pos)}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -82,6 +83,8 @@ declarationstmt returns [interfaces.Instruction dec]
 : VAR ID DOSPUNTOS types IGUAL expr  { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, $expr.e) }
 | VAR ID IGUAL expr { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true,environment.DEPENDIENTE, $expr.e) }
 | VAR ID DOSPUNTOS types CIERRAPREGUNTA { $dec = instructions.NewDeclaracion($VAR.line, $VAR.pos, $ID.text,true, $types.ty, nil) }
+| VAR ID DOSPUNTOS COR_IZQ types COR_DER IGUAL exprvector { $dec = instructions.NewDeclaracionVector($VAR.line, $VAR.pos, $ID.text,true, $types.ty, $exprvector.exprv) }
+|VAR ID DOSPUNTOS typesmatriz IGUAL expr  { $dec = instructions.NewDeclaracionMatriz($VAR.line, $VAR.pos, $ID.text,true, $typesmatriz.tm, $expr.e) }
 | LET ID DOSPUNTOS types IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false, $types.ty, $expr.e) }
 | LET ID IGUAL expr { $dec = instructions.NewDeclaracion($LET.line, $LET.pos, $ID.text,false,environment.DEPENDIENTE, $expr.e) }
 ;
@@ -96,7 +99,20 @@ types returns[environment.TipoExpresion ty]
 | FLOAT { $ty = environment.FLOAT }
 | STR { $ty = environment.STRING }
 | BOOL { $ty = environment.BOOLEAN }
-| COR_IZQ COR_DER { $ty = environment.ARRAY }
+;
+
+typesmatriz returns[[]interface{} tm]
+:COR_IZQ list=typesmatriz COR_DER {
+                                var arr []interface{}
+                                newTipo := environment.NewTipoArray(environment.ARRAY)
+                                arr = append($list.tm, newTipo)
+                                $tm = arr
+                            }   
+| types {
+            $tm = []interface{}{}
+            newTipo := environment.NewTipoArray($types.ty)
+            $tm = append($tm, newTipo)
+        }
 ;
 
 exprFor returns[interfaces.Expression e]
@@ -148,6 +164,12 @@ conversionstmt returns [interfaces.Expression conv]
 : INT PAR_IZQ expr PAR_DER { $conv = expressions.NewToInt($INT.line, $INT.pos, $expr.e) }
 | FLOAT PAR_IZQ expr PAR_DER { $conv = expressions.NewToFloat($FLOAT.line, $FLOAT.pos, $expr.e) }
 | STR PAR_IZQ expr PAR_DER { $conv = expressions.NewToString($STR.line, $STR.pos, $expr.e) }
+;
+
+exprvector returns [interfaces.Expression exprv]
+: COR_IZQ listParams COR_DER { $exprv = expressions.NewVector($COR_IZQ.line, $COR_IZQ.pos, $listParams.l) }
+| COR_IZQ COR_DER { $exprv = expressions.NewVector($COR_IZQ.line, $COR_IZQ.pos, nil) }
+| ID { $exprv = expressions.NewLlamadoVar($ID.line, $ID.pos, $ID.text)}
 ;
 
 listParams returns[[]interface{} l]

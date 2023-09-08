@@ -10,5 +10,5 @@ const (
 	NULL						//4
 	ARRAY						//5
 	DEPENDIENTE					//6
-	BREAKY						//7
+	VECTOR						//7
 )

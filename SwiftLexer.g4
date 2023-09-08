@@ -20,6 +20,14 @@ VAR: 'var';
 LET: 'let';
 NIL: 'nil';
 BREAK: 'break';
+CONTINUE: 'continue';
+APPEND: 'append';
+REMOVELAST: 'removeLast';
+REMOVE: 'remove';
+AT: 'at';
+ISEMPTY: 'IsEmpty';
+COUNT: 'count';
+ARRAY: 'array';
 
 //primitivos
 NUMBER: [0-9]+ ('.' [0-9]+)?;

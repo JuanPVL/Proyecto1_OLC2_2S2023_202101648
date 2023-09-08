@@ -2,6 +2,7 @@ package expressions
 
 import(
 	"Proyecto1_OLC2_2S2023_202101648/Environment"
+	"strconv"
 )
 
 type LlamadoVar struct {
@@ -16,6 +17,8 @@ func NewLlamadoVar(lin int, col int, id string) LlamadoVar {
 }
 
 func (p LlamadoVar) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
-	resultado := env.(environment.Environment).GetVariable(p.Id)
+	linea := strconv.Itoa(p.Lin)
+	columna := strconv.Itoa(p.Col)
+	resultado := env.(environment.Environment).GetVariable(p.Id,ast,linea,columna)
 	return resultado
 }

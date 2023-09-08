@@ -28,7 +28,7 @@ func (p toString) Ejecutar(ast *environment.AST, env interface{}) environment.Sy
 		exp.Valor = valor
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.STRING, Valor: exp.Valor, Mutable: true}
 	} else if exp.Tipo == environment.FLOAT {
-		valor := strconv.FormatFloat(exp.Valor.(float64), 'f', 2, 64)
+		valor := strconv.FormatFloat(exp.Valor.(float64), 'f', 3, 64)
 		exp.Valor = valor
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.STRING, Valor: exp.Valor, Mutable: true}
 	} else if exp.Tipo == environment.BOOLEAN {
@@ -36,6 +36,9 @@ func (p toString) Ejecutar(ast *environment.AST, env interface{}) environment.Sy
 		exp.Valor = valor
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.STRING, Valor: exp.Valor, Mutable: true}
 	} else {
+		linea := strconv.Itoa(p.Lin)
+		columna := strconv.Itoa(p.Col)
+		ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "La variable no puede convertirse a string", Ambito: env.(environment.Environment).Id})
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 	}
 }

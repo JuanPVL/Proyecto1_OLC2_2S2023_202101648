@@ -20,6 +20,6 @@ func NewAsignacion(lin int, col int,id string, val interfaces.Expression) Asigna
 func (va Asignacion) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 	var result environment.Symbol
 	result = va.Expresion.Ejecutar(ast,env)
-	env.(environment.Environment).SetVariable(va.Id, result)
+	env.(environment.Environment).SetVariable(va.Id, result,ast)
 	return result
 }

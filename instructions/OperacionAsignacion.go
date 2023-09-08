@@ -33,7 +33,9 @@ func (p OperacionAsignacion) Ejecutar(ast *environment.AST, env interface{}) env
 		//NULL
 		{environment.NULL, environment.NULL, environment.NULL, environment.NULL, environment.NULL},
 	}
-	resultado := env.(environment.Environment).GetVariable(p.Id)
+	linea := strconv.Itoa(p.Lin)
+	columna := strconv.Itoa(p.Col)
+	resultado := env.(environment.Environment).GetVariable(p.Id,ast,linea,columna)
 	var op1 environment.Symbol
 	op1 = p.Valor.Ejecutar(ast,env)
 	switch p.Operador {
@@ -43,7 +45,7 @@ func (p OperacionAsignacion) Ejecutar(ast *environment.AST, env interface{}) env
 				if dominante == environment.INTEGER {
 					resultado.Valor = resultado.Valor.(int) + op1.Valor.(int)
 					resultado.Mutable = true
-					env.(environment.Environment).SetVariable(p.Id,resultado)
+					env.(environment.Environment).SetVariable(p.Id,resultado,ast)
 					return resultado
 				} else if dominante == environment.FLOAT {
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", resultado.Valor), 64)
@@ -51,7 +53,7 @@ func (p OperacionAsignacion) Ejecutar(ast *environment.AST, env interface{}) env
 					resultado.Valor = val1 + val2
 					resultado.Mutable = true
 					resultado.Tipo = environment.FLOAT
-					env.(environment.Environment).SetVariable(p.Id,resultado)
+					env.(environment.Environment).SetVariable(p.Id,resultado,ast)
 					return resultado
 				} else if dominante == environment.STRING {
 					r1 := fmt.Sprintf("%v", resultado.Valor)
@@ -59,9 +61,11 @@ func (p OperacionAsignacion) Ejecutar(ast *environment.AST, env interface{}) env
 					resultado.Valor = r1 + r2
 					resultado.Mutable = true
 					resultado.Tipo = environment.STRING
-					env.(environment.Environment).SetVariable(p.Id,resultado)
+					env.(environment.Environment).SetVariable(p.Id,resultado,ast)
 				} else {
-					ast.SetErrors("Error de tipos en la suma")
+					linea := strconv.Itoa(p.Lin)
+					columna := strconv.Itoa(p.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la suma", Ambito: env.(environment.Environment).Id})
 					return environment.Symbol{Lin: 0, Col: 0, Tipo: environment.NULL, Valor: 0}
 				}
 			}
@@ -72,7 +76,7 @@ func (p OperacionAsignacion) Ejecutar(ast *environment.AST, env interface{}) env
 					resultado.Valor = resultado.Valor.(int) - op1.Valor.(int)
 					resultado.Mutable = true
 					resultado.Tipo = environment.INTEGER
-					env.(environment.Environment).SetVariable(p.Id,resultado)
+					env.(environment.Environment).SetVariable(p.Id,resultado,ast)
 					return resultado
 				} else if dominante == environment.FLOAT{
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", resultado.Valor), 64)
@@ -80,10 +84,12 @@ func (p OperacionAsignacion) Ejecutar(ast *environment.AST, env interface{}) env
 					resultado.Valor = val1 - val2
 					resultado.Mutable = true
 					resultado.Tipo = environment.FLOAT
-					env.(environment.Environment).SetVariable(p.Id,resultado)
+					env.(environment.Environment).SetVariable(p.Id,resultado,ast)
 					return resultado
 				} else {
-					ast.SetErrors("Error de tipos en la resta")
+					linea := strconv.Itoa(p.Lin)
+					columna := strconv.Itoa(p.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la resta", Ambito: env.(environment.Environment).Id})
 					return environment.Symbol{Lin: 0, Col: 0, Tipo: environment.NULL, Valor: 0}
 				}
 			}

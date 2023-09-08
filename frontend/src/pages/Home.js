@@ -47,14 +47,14 @@ function Home() {
                 console.log(editor);
                 const response = await axios.post('http://localhost:3002/Interpreter', { Content: editor });
                 console.log(response.data);
-                const { Output, Flag, Message } = response.data;
+                const { Output,ErroresP,TablaSimbs,Flag, Message } = response.data;
                 // console.log(consola);
                 // console.log("ast", ast);
-                // console.log("tablaS", tablaSimbolos);
-                // console.log("errores", errores);
+                console.log("tablaS", TablaSimbs);
+                console.log("errores", ErroresP);
                 // setDot(ast);
-                // setDot2(tablaSimbolos);
-                // setDot3(errores);
+                setDot2(TablaSimbs);
+                setDot3(ErroresP);
                 console.log(Flag);
                 console.log(Message);
                 setConsola(Output);
@@ -90,7 +90,7 @@ function Home() {
                 </Col>
                 <Col>
                     <Button variant="primary" onClick={handleShow}>
-                        AST
+                        CST
                     </Button>
                 </Col>
                 <Col>

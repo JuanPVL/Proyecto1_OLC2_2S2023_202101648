@@ -3,6 +3,7 @@ package expressions
 import (
 	"Proyecto1_OLC2_2S2023_202101648/Environment"
 	"Proyecto1_OLC2_2S2023_202101648/interfaces"
+	"strconv"
 	//"fmt"
 )
 
@@ -39,7 +40,9 @@ func (p ForRange) Ejecutar(ast *environment.AST, env interface{}) environment.Sy
 			}
 		}
 	} else {
-		ast.SetErrors("Error en los indices")
+		linea := strconv.Itoa(p.Lin)
+		columna := strconv.Itoa(p.Col)
+		ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "El rango no es valido", Ambito: "FOR"})
 	}
 	return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.ARRAY, Valor: rango, Mutable: true}
 }

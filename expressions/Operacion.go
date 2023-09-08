@@ -57,7 +57,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					r2 := fmt.Sprintf("%v", op2.Valor)
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 + r2,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la suma")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la suma", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "-":
@@ -71,7 +73,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 - val2,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la resta")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la resta", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "*":
@@ -84,8 +88,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 * val2,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la multiplicacion")
-				}
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la multiplicacion", Ambito: env.(environment.Environment).Id})				}
 			}
 		case "/":
 			{
@@ -94,7 +99,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					if op2.Valor.(int) != 0 {
 						return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) / op2.Valor.(int),Mutable: true}
 					} else {
-						ast.SetErrors("No puede dividir entre cero")
+						linea := strconv.Itoa(o.Lin)
+						columna := strconv.Itoa(o.Col)
+						ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "No puede dividir entre cero", Ambito: env.(environment.Environment).Id})
 					}
 
 				} else if dominante == environment.FLOAT {
@@ -103,10 +110,14 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					if val2 != 0 {
 						return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 / val2,Mutable: true}
 					} else {
-						ast.SetErrors("No puede dividir entre cero")
+						linea := strconv.Itoa(o.Lin)
+						columna := strconv.Itoa(o.Col)
+						ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "No puede dividir entre cero", Ambito: env.(environment.Environment).Id})
 					}
 				} else {
-					ast.SetErrors("Error de tipos en la division")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la division", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "%":
@@ -116,10 +127,13 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					if op2.Valor.(int) != 0 {
 						return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) % op2.Valor.(int),Mutable: true}
 					} else {
-						ast.SetErrors("No puede dividir entre cero")
-					}
+						linea := strconv.Itoa(o.Lin)
+						columna := strconv.Itoa(o.Col)
+						ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "No puede dividir entre cero", Ambito: env.(environment.Environment).Id})					}
 				} else {
-					ast.SetErrors("Error de tipos en el modulo")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en el modulo", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "UNARIO":
@@ -130,7 +144,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.FLOAT, Valor: -val1,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en el unario")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en el unario", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "<":
@@ -143,7 +159,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 < val2,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la comparacion menor que")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la comparacion menor que", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case ">":
@@ -156,7 +174,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 > val2,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la comparacion mayor que")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la comparacion mayor que", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "<=":
@@ -169,7 +189,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 <= val2,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la comparacion menor igual que")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la comparacion menor igual que", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case ">=":
@@ -182,7 +204,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 >= val2,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la comparacion mayor igual que")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la comparacion mayor igual que", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "==":
@@ -190,7 +214,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				if op1.Tipo == op2.Tipo {
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor == op2.Valor,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la comparacion igual que")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la comparacion igual que", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "!=":
@@ -198,7 +224,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				if op1.Tipo == op2.Tipo {
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor != op2.Valor,Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la comparacion diferente que")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la comparacion diferente que", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "&&":
@@ -206,7 +234,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				if(op1.Tipo == environment.BOOLEAN && op2.Tipo == environment.BOOLEAN){
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) && op2.Valor.(bool),Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la comparacion AND")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la comparacion AND", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "||":
@@ -214,7 +244,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				if(op1.Tipo == environment.BOOLEAN && op2.Tipo == environment.BOOLEAN){
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) || op2.Valor.(bool),Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la comparacion OR")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la comparacion OR", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		case "!":
@@ -222,7 +254,9 @@ func (o Operacion) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				if(op1.Tipo == environment.BOOLEAN){
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: !op1.Valor.(bool),Mutable: true}
 				} else {
-					ast.SetErrors("Error de tipos en la comparacion NOT")
+					linea := strconv.Itoa(o.Lin)
+					columna := strconv.Itoa(o.Col)
+					ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "Error de tipos en la comparacion NOT", Ambito: env.(environment.Environment).Id})
 				}
 			}
 		}

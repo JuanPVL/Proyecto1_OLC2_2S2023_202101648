@@ -17,7 +17,7 @@ func NewBreak(lin int, col int) Break {
 
 func (p Break) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 	var resultado environment.Symbol
-	resultado = environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.BREAKY, Valor: "break", Mutable: false,BreakFlag: true}
+	resultado = environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: "break", Mutable: false,BreakFlag: true}
 	fmt.Print("ENCONTRE BREAK")
 	return resultado
 }

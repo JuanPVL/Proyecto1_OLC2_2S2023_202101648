@@ -40,6 +40,9 @@ type SwiftGrammarListener interface {
 	// EnterTypes is called when entering the types production.
 	EnterTypes(c *TypesContext)
 
+	// EnterTypesmatriz is called when entering the typesmatriz production.
+	EnterTypesmatriz(c *TypesmatrizContext)
+
 	// EnterExprFor is called when entering the exprFor production.
 	EnterExprFor(c *ExprForContext)
 
@@ -48,6 +51,9 @@ type SwiftGrammarListener interface {
 
 	// EnterConversionstmt is called when entering the conversionstmt production.
 	EnterConversionstmt(c *ConversionstmtContext)
+
+	// EnterExprvector is called when entering the exprvector production.
+	EnterExprvector(c *ExprvectorContext)
 
 	// EnterListParams is called when entering the listParams production.
 	EnterListParams(c *ListParamsContext)
@@ -88,6 +94,9 @@ type SwiftGrammarListener interface {
 	// ExitTypes is called when exiting the types production.
 	ExitTypes(c *TypesContext)
 
+	// ExitTypesmatriz is called when exiting the typesmatriz production.
+	ExitTypesmatriz(c *TypesmatrizContext)
+
 	// ExitExprFor is called when exiting the exprFor production.
 	ExitExprFor(c *ExprForContext)
 
@@ -96,6 +105,9 @@ type SwiftGrammarListener interface {
 
 	// ExitConversionstmt is called when exiting the conversionstmt production.
 	ExitConversionstmt(c *ConversionstmtContext)
+
+	// ExitExprvector is called when exiting the exprvector production.
+	ExitExprvector(c *ExprvectorContext)
 
 	// ExitListParams is called when exiting the listParams production.
 	ExitListParams(c *ListParamsContext)

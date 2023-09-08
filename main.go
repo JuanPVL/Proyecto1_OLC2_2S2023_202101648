@@ -4,6 +4,7 @@ import (
 	"Proyecto1_OLC2_2S2023_202101648/Environment"
 	"Proyecto1_OLC2_2S2023_202101648/interfaces"
 	"Proyecto1_OLC2_2S2023_202101648/parser"
+	"strconv"
 
 	"github.com/antlr4-go/antlr/v4"
 	"github.com/gofiber/fiber/v2"
@@ -17,6 +18,8 @@ type TreeShapeListener struct {
 
 type Resp struct {
 	Output  string
+	ErroresP string
+	TablaSimbs string
 	Flag    bool
 	Message string
 }
@@ -39,6 +42,8 @@ func handleInterpreter(c *fiber.Ctx) error {
 	//creacion de parser
 	p := parser.NewSwiftGrammarParser(tokens)
 	p.BuildParseTrees = true
+	//p.RemoveErrorListeners()
+	//p.AddErrorListener(antlr.Error)
 	tree := p.S()
 	//listener
 	var listener *TreeShapeListener = NewTreeShapeListener()
@@ -53,15 +58,32 @@ func handleInterpreter(c *fiber.Ctx) error {
 		inst.(interfaces.Instruction).Ejecutar(&Ast, globalEnv)
 	}
 	var ConsoleOut = ""
-	if Ast.GetErrors() != "" {
-		ConsoleOut = Ast.GetErrors()
-		
-	} 
-	
+	var grapherrors = ""
+	var graphTS = ""
+	var contadorsito = 1
+	errorsitos := Ast.GetErrors()
+	simbolitos := Ast.GetTablaSimbolos()
+	grapherrors = "digraph Errores {\n parent [shape=none\n label=<\n <table border= '1' cellspacing=\"0\">\n <tr><td bgcolor=\"#FFD352\">No.</td><td bgcolor=\"#FFD352\">Descripcion</td><td bgcolor=\"#FFD352\">Ambito</td><td bgcolor=\"#FFD352\">Linea</td><td bgcolor=\"#FFD352\">Columna</td></tr>\n"
+
+	for _, errorl := range errorsitos {
+		ConsoleOut += "Error en la linea " + errorl.(environment.ErrorS).Lin + " y columna " + errorl.(environment.ErrorS).Col + " " + errorl.(environment.ErrorS).Descripcion + "\n"
+		grapherrors += "<tr><td>" + strconv.Itoa(contadorsito) + "</td><td>" + errorl.(environment.ErrorS).Descripcion + "</td><td>" + errorl.(environment.ErrorS).Ambito + "</td><td>" + errorl.(environment.ErrorS).Lin + "</td><td>" + errorl.(environment.ErrorS).Col + "</td></tr>\n"
+		contadorsito++
+	}
+	grapherrors += "</table>>];\n}"
 	ConsoleOut += Ast.GetPrint()
+
+	graphTS = "digraph TSimbolos {\n parent [shape=none\n label=<\n <table border= '1' cellspacing=\"0\">\n <tr><td bgcolor=\"#FFD352\">ID</td><td bgcolor=\"#FFD352\">Tipo Simbolo</td><td bgcolor=\"#FFD352\">Tipo Dato</td><td bgcolor=\"#FFD352\">Ambito</td><td bgcolor=\"#FFD352\">Linea</td><td bgcolor=\"#FFD352\">Columna</td></tr>\n"
 	
+	for _, simbolito := range simbolitos {
+		graphTS += "<tr><td>" + simbolito.(environment.SimbolTabla).Id + "</td><td>" + simbolito.(environment.SimbolTabla).TipoSimbolo + "</td><td>" + simbolito.(environment.SimbolTabla).TipoDato + "</td><td>" + simbolito.(environment.SimbolTabla).Ambito + "</td><td>" + simbolito.(environment.SimbolTabla).Lin + "</td><td>" + simbolito.(environment.SimbolTabla).Col + "</td></tr>\n"
+	}
+	graphTS += "</table>>];\n}"
+
 	response := Resp{
 		Output:  ConsoleOut,
+		ErroresP: grapherrors,
+		TablaSimbs: graphTS,
 		Flag:    true,
 		Message: "<3 Ejecución realizada con éxito <3",
 	}

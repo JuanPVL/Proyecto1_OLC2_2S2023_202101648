@@ -3,6 +3,7 @@ package instructions
 import (
 	"Proyecto1_OLC2_2S2023_202101648/Environment"
 	"Proyecto1_OLC2_2S2023_202101648/interfaces"
+	"strconv"
 )
 
 type If struct {
@@ -23,7 +24,9 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 	condicion = p.Condicion.Ejecutar(ast,env)
 
 	if condicion.Tipo != environment.BOOLEAN {
-		ast.SetErrors("La condicion no es booleana")
+		linea := strconv.Itoa(p.Lin)
+		columna := strconv.Itoa(p.Col)
+		ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "La condicion no es valida", Ambito: env.(environment.Environment).Id})
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 	}
 
@@ -31,17 +34,28 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 		var ifEnv environment.Environment
 		ifEnv = environment.NewEnvironment(env.(environment.Environment),"IF")
 		for _, inst := range p.Bloque {
-			inst.(interfaces.Instruction).Ejecutar(ast,ifEnv)
+			val:=inst.(interfaces.Instruction).Ejecutar(ast,ifEnv)
+			if val.BreakFlag == true || val.Valor == "break"{
+				return val
+			} else if val.ContinueFlag == true || val.Valor == "continue"{
+				return val
+			}
 		}
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 	} else {
 		var elseEnv environment.Environment
 		elseEnv = environment.NewEnvironment(env.(environment.Environment),"ELSE")
 		for _, inst := range p.ElseBloque {
-			inst.(interfaces.Instruction).Ejecutar(ast,elseEnv)
+			val:=inst.(interfaces.Instruction).Ejecutar(ast,elseEnv)
+			if val.BreakFlag == true || val.Valor == "break"{
+				return val
+			} else if val.ContinueFlag == true || val.Valor == "continue"{
+				return val
+			}
 		}
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 	}
 	return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 }
+
 

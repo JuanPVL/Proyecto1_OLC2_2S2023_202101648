@@ -45,7 +45,9 @@ func (p toInt) Ejecutar(ast *environment.AST, env interface{}) environment.Symbo
 		valorInt := int(valor)
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.INTEGER, Valor: valorInt, Mutable: true}
 	} else {
-		ast.SetErrors("Error de tipos en la funcion toInt")
+		linea := strconv.Itoa(p.Lin)
+		columna := strconv.Itoa(p.Col)
+		ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "La variable no pudo ser convertida a int", Ambito: env.(environment.Environment).Id})
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
 	}
 }

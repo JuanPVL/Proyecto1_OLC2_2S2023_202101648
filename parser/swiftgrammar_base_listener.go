@@ -86,6 +86,12 @@ func (s *BaseSwiftGrammarListener) EnterTypes(ctx *TypesContext) {}
 // ExitTypes is called when production types is exited.
 func (s *BaseSwiftGrammarListener) ExitTypes(ctx *TypesContext) {}
 
+// EnterTypesmatriz is called when production typesmatriz is entered.
+func (s *BaseSwiftGrammarListener) EnterTypesmatriz(ctx *TypesmatrizContext) {}
+
+// ExitTypesmatriz is called when production typesmatriz is exited.
+func (s *BaseSwiftGrammarListener) ExitTypesmatriz(ctx *TypesmatrizContext) {}
+
 // EnterExprFor is called when production exprFor is entered.
 func (s *BaseSwiftGrammarListener) EnterExprFor(ctx *ExprForContext) {}
 
@@ -103,6 +109,12 @@ func (s *BaseSwiftGrammarListener) EnterConversionstmt(ctx *ConversionstmtContex
 
 // ExitConversionstmt is called when production conversionstmt is exited.
 func (s *BaseSwiftGrammarListener) ExitConversionstmt(ctx *ConversionstmtContext) {}
+
+// EnterExprvector is called when production exprvector is entered.
+func (s *BaseSwiftGrammarListener) EnterExprvector(ctx *ExprvectorContext) {}
+
+// ExitExprvector is called when production exprvector is exited.
+func (s *BaseSwiftGrammarListener) ExitExprvector(ctx *ExprvectorContext) {}
 
 // EnterListParams is called when production listParams is entered.
 func (s *BaseSwiftGrammarListener) EnterListParams(ctx *ListParamsContext) {}
