@@ -50,7 +50,7 @@ public class SwiftLexer extends Lexer {
 			null, "'Int'", "'Float'", "'Bool'", "'String'", "'true'", "'false'", 
 			"'print'", "'if'", "'else'", "'while'", "'for'", "'in'", "'var'", "'let'", 
 			"'nil'", "'break'", "'continue'", "'append'", "'removeLast'", "'remove'", 
-			"'at'", "'IsEmpty'", "'count'", "'array'", null, null, null, "'!='", 
+			"'at'", "'isEmpty'", "'count'", "'array'", null, null, null, "'!='", 
 			"'=='", "'!'", "'||'", "'&&'", "'='", "'>='", "'<='", "'>'", "'<'", "'*'", 
 			"'/'", "'+'", "'-'", "'%'", "'('", "')'", "'{'", "'}'", "':'", "'['", 
 			"']'", "','", "'?'", "';'", "'.'"
@@ -208,7 +208,7 @@ public class SwiftLexer extends Lexer {
 		"\7u\2\2\u00dc\u00dd\7v\2\2\u00dd(\3\2\2\2\u00de\u00df\7t\2\2\u00df\u00e0"+
 		"\7g\2\2\u00e0\u00e1\7o\2\2\u00e1\u00e2\7q\2\2\u00e2\u00e3\7x\2\2\u00e3"+
 		"\u00e4\7g\2\2\u00e4*\3\2\2\2\u00e5\u00e6\7c\2\2\u00e6\u00e7\7v\2\2\u00e7"+
-		",\3\2\2\2\u00e8\u00e9\7K\2\2\u00e9\u00ea\7u\2\2\u00ea\u00eb\7G\2\2\u00eb"+
+		",\3\2\2\2\u00e8\u00e9\7k\2\2\u00e9\u00ea\7u\2\2\u00ea\u00eb\7G\2\2\u00eb"+
 		"\u00ec\7o\2\2\u00ec\u00ed\7r\2\2\u00ed\u00ee\7v\2\2\u00ee\u00ef\7{\2\2"+
 		"\u00ef.\3\2\2\2\u00f0\u00f1\7e\2\2\u00f1\u00f2\7q\2\2\u00f2\u00f3\7w\2"+
 		"\2\u00f3\u00f4\7p\2\2\u00f4\u00f5\7v\2\2\u00f5\60\3\2\2\2\u00f6\u00f7"+

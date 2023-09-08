@@ -44,6 +44,9 @@ instruction returns [interfaces.Instruction inst]
 | forstmt { $inst = $forstmt.forinst }
 | BREAK (PUNTOCOMA)? {$inst = instructions.NewBreak($BREAK.line, $BREAK.pos)}
 | CONTINUE (PUNTOCOMA)? {$inst = instructions.NewContinue($CONTINUE.line, $CONTINUE.pos)}
+| ID PUNTO APPEND PAR_IZQ expr PAR_DER (PUNTOCOMA)? {$inst = instructions.NewAppend($ID.line, $ID.pos, $ID.text, $expr.e)}
+| ID PUNTO REMOVELAST PAR_IZQ PAR_DER (PUNTOCOMA)? {$inst = instructions.NewRemoveLast($ID.line, $ID.pos, $ID.text)}
+| ID PUNTO REMOVE PAR_IZQ AT DOSPUNTOS expr PAR_DER (PUNTOCOMA)? {$inst = instructions.NewRemoveAt($ID.line, $ID.pos, $ID.text, $expr.e)}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -132,6 +135,8 @@ expr returns [interfaces.Expression e]
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | PAR_IZQ expr PAR_DER { $e = $expr.e }
 | conversionstmt { $e = $conversionstmt.conv }
+|ID PUNTO COUNT { $e = expressions.NewCount($ID.line, $ID.pos, $ID.text)}
+|ID PUNTO ISEMPTY { $e = expressions.NewIsEmpty($ID.line, $ID.pos, $ID.text)}
 | list=listArray { $e = $list.p}
 | COR_IZQ listParams COR_DER { $e = expressions.NewArray($COR_IZQ.line, $COR_IZQ.pos, $listParams.l) }
 | NUMBER                             

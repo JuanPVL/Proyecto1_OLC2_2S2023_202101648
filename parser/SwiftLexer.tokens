@@ -75,7 +75,7 @@ LINE_COMMENT=56
 'removeLast'=19
 'remove'=20
 'at'=21
-'IsEmpty'=22
+'isEmpty'=22
 'count'=23
 'array'=24
 '!='=28
