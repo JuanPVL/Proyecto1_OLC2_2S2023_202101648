@@ -21,7 +21,7 @@ func NewStructAccess(lin int, col int, str interfaces.Expression, id string) Str
 func (p StructAccess) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 
 	var result, tempStruct environment.Symbol
-	tempStruct = p.Struct.Ejecutar(ast, env) //sym{[1,2,3,4]}
+	tempStruct = p.Struct.Ejecutar(ast, env) //obtengo el struct
 
 	if tempStruct.Tipo == environment.STRUCT {
 

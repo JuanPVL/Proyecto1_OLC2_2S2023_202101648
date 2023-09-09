@@ -100,7 +100,7 @@ function Home() {
                     <Button onClick={() => setErShow(true)}>Errores</Button>
                 </Col>
                 <Col>
-                    <input type="file" id="file" accept=".tw"/>
+                    <input type="file" id="file" accept=".swift"/>
                 </Col>
             </Row>
             <Row>

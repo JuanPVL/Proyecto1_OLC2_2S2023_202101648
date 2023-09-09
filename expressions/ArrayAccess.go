@@ -36,14 +36,14 @@ func (p ArrayAccess) Ejecutar(ast *environment.AST, env interface{}) environment
 		} else {
 			linea := strconv.Itoa(p.Lin)
 			columna := strconv.Itoa(p.Col)
-			ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "El indice no es valido", Ambito: "ARRAY"})
+			ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "El indice no es valido", Ambito: env.(environment.Environment).Id})
 			//fmt.Println("Indice: ", tempIndex.Valor.(int))
 			//fmt.Println("Tamaño: ", len(tempValor.([]interface{})))
 		}
 	} else {
 		linea := strconv.Itoa(p.Lin)
 		columna := strconv.Itoa(p.Col)
-		ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "La variable no es un arreglo", Ambito: "ARRAY"})
+		ast.SetErrors(environment.ErrorS{Lin: linea, Col: columna, Descripcion: "La variable no es un arreglo", Ambito: env.(environment.Environment).Id})
 	}
 	return environment.Symbol{
 		Lin: p.Lin,

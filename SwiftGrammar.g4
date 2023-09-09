@@ -62,13 +62,25 @@ structCreation returns[interfaces.Instruction dec]
 listStructDec returns[[]interface{} l]
 : list=listStructDec COMA VAR ID DOSPUNTOS types {
                                                 var arr []interface{}
-                                                newParams := environment.NewStructType($ID.text, $types.ty)
+                                                newParams := environment.NewStructType($ID.text, $types.ty,"")
+                                                arr = append($list.l, newParams)
+                                                $l = arr
+                                            }
+| list=listStructDec COMA VAR idp=ID DOSPUNTOS ids=ID {
+                                                var arr []interface{}
+                                                newParams := environment.NewStructType($idp.text, environment.DEPENDIENTE,$ids.text)
                                                 arr = append($list.l, newParams)
                                                 $l = arr
                                             }
 | VAR ID DOSPUNTOS types {
                         var arr []interface{}
-                        newParams := environment.NewStructType($ID.text, $types.ty)
+                        newParams := environment.NewStructType($ID.text, $types.ty,"")
+                        arr = append(arr, newParams)
+                        $l = arr
+                    }
+| VAR idp=ID DOSPUNTOS ids=ID {
+                        var arr []interface{}
+                        newParams := environment.NewStructType($idp.text, environment.DEPENDIENTE,$ids.text)
                         arr = append(arr, newParams)
                         $l = arr
                     }
@@ -284,7 +296,7 @@ listParamsCall returns[[]interface{} l]
 ;
 
 listStructExp returns[[]interface{} l]
-: list=listStructExp COMA ID DOSPUNTOS expr {
+: list=listStructExp (COMA)? ID DOSPUNTOS expr {
                                             var arr []interface{}
                                             StrExp := environment.NewStructContent($ID.text, $expr.e)
                                             arr = append($list.l, StrExp)
