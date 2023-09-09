@@ -42,17 +42,42 @@ instruction returns [interfaces.Instruction inst]
 | asignationstmt (PUNTOCOMA)? { $inst = $asignationstmt.asig }
 | whilestmt { $inst = $whilestmt.whileinst }
 | forstmt { $inst = $forstmt.forinst }
+| guardstmt { $inst = $guardstmt.gd }
+| function {$inst = $function.fun}
+| structCreation { $inst = $structCreation.dec }
+| callFuncionIns (PUNTOCOMA)? {$inst = $callFuncionIns.cf}
 | BREAK (PUNTOCOMA)? {$inst = instructions.NewBreak($BREAK.line, $BREAK.pos)}
 | CONTINUE (PUNTOCOMA)? {$inst = instructions.NewContinue($CONTINUE.line, $CONTINUE.pos)}
 | ID PUNTO APPEND PAR_IZQ expr PAR_DER (PUNTOCOMA)? {$inst = instructions.NewAppend($ID.line, $ID.pos, $ID.text, $expr.e)}
 | ID PUNTO REMOVELAST PAR_IZQ PAR_DER (PUNTOCOMA)? {$inst = instructions.NewRemoveLast($ID.line, $ID.pos, $ID.text)}
 | ID PUNTO REMOVE PAR_IZQ AT DOSPUNTOS expr PAR_DER (PUNTOCOMA)? {$inst = instructions.NewRemoveAt($ID.line, $ID.pos, $ID.text, $expr.e)}
+| RETURN expr (PUNTOCOMA)? {$inst = instructions.NewReturn($RETURN.line, $RETURN.pos, $expr.e)}
+| RETURN (PUNTOCOMA)? {$inst = instructions.NewReturn($RETURN.line, $RETURN.pos, nil)}
+;
+
+structCreation returns[interfaces.Instruction dec]
+: STRUCT ID LLAVE_IZQ listStructDec LLAVE_DER { $dec = instructions.NewStruct($STRUCT.line, $STRUCT.pos, $ID.text, $listStructDec.l) }
+;
+
+listStructDec returns[[]interface{} l]
+: list=listStructDec COMA VAR ID DOSPUNTOS types {
+                                                var arr []interface{}
+                                                newParams := environment.NewStructType($ID.text, $types.ty)
+                                                arr = append($list.l, newParams)
+                                                $l = arr
+                                            }
+| VAR ID DOSPUNTOS types {
+                        var arr []interface{}
+                        newParams := environment.NewStructType($ID.text, $types.ty)
+                        arr = append(arr, newParams)
+                        $l = arr
+                    }
+|  { $l = []interface{}{} }
 ;
 
 printstmt returns [interfaces.Instruction prnt]
 : PRINT PAR_IZQ listParams PAR_DER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$listParams.l)}
 ;
-
 
 blockelsif returns [[]interface{} blkif]
 @init{
@@ -78,6 +103,10 @@ whilestmt returns [interfaces.Instruction whileinst]
 : WHILE expr LLAVE_IZQ block LLAVE_DER { $whileinst = instructions.NewWhile($WHILE.line, $WHILE.pos, $expr.e, $block.blk) }
 ;
 
+guardstmt returns [interfaces.Instruction gd]
+: GUARD expr ELSE LLAVE_IZQ block LLAVE_DER { $gd = instructions.NewGuard($GUARD.line, $GUARD.pos, $expr.e, $block.blk) }
+;
+
 forstmt returns [interfaces.Instruction forinst]
 : FOR ID IN exprFor LLAVE_IZQ block LLAVE_DER {$forinst = instructions.NewFor($FOR.line, $FOR.pos, $ID.text, $exprFor.e, $block.blk)}
 ;
@@ -94,7 +123,45 @@ declarationstmt returns [interfaces.Instruction dec]
 
 asignationstmt returns [interfaces.Instruction asig]
 : ID IGUAL expr { $asig = instructions.NewAsignacion($ID.line, $ID.pos, $ID.text, $expr.e) }
+| ID COR_IZQ index=expr COR_DER IGUAL listan=expr { $asig = instructions.NewAsignacionIndexVector($ID.line, $ID.pos, $ID.text, $index.e, $listan.e) }
 | ID op=(SUM|RES) IGUAL expr {$asig = instructions.NewOperacionAsignacion($ID.line, $ID.pos, $ID.text, $expr.e, $op.text)}
+;
+
+
+function returns [interfaces.Instruction fun]
+: FUNC ID PAR_IZQ listParamsFunc PAR_DER LLAVE_IZQ block LLAVE_DER {$fun = instructions.NewFuncion($FUNC.line, $FUNC.pos, $ID.text, $listParamsFunc.lpf,environment.NULL, $block.blk)}
+| FUNC ID PAR_IZQ listParamsFunc PAR_DER FLECHA types LLAVE_IZQ block LLAVE_DER {$fun = instructions.NewFuncion($FUNC.line, $FUNC.pos, $ID.text, $listParamsFunc.lpf, $types.ty, $block.blk)}
+| FUNC ID PAR_IZQ listParamsFunc PAR_DER FLECHA COR_IZQ types COR_DER LLAVE_IZQ block LLAVE_DER {$fun = instructions.NewFuncion($FUNC.line, $FUNC.pos, $ID.text, $listParamsFunc.lpf, environment.VECTOR, $block.blk)}
+;
+
+listParamsFunc returns[[]interface{} lpf]
+: list=listParamsFunc COMA ID DOSPUNTOS types {
+    var arr []interface{}
+    newParam := instructions.NewDeclaracionParametros($ID.line, $ID.pos, $ID.text, $types.ty)
+    arr = append($list.lpf, newParam)
+    $lpf = arr
+    }
+|list=listParamsFunc COMA ID DOSPUNTOS COR_IZQ types COR_DER {
+    var arr []interface{}
+    newParam := instructions.NewDeclaracionParametros($ID.line, $ID.pos, $ID.text, environment.VECTOR)
+    arr = append($list.lpf, newParam)
+    $lpf = arr
+    }
+| ID DOSPUNTOS types {
+    $lpf = []interface{}{}
+    newParam := instructions.NewDeclaracionParametros($ID.line, $ID.pos, $ID.text, $types.ty)
+    $lpf = append($lpf, newParam)
+    }
+| ID DOSPUNTOS COR_IZQ types COR_DER {
+    $lpf = []interface{}{}
+    newParam := instructions.NewDeclaracionParametros($ID.line, $ID.pos, $ID.text, environment.VECTOR)
+    $lpf = append($lpf, newParam)
+    }
+|  { $lpf = []interface{}{} }
+;
+
+callFuncionIns returns[interfaces.Expression cf]
+: ID PAR_IZQ listParamsCall PAR_DER { $cf = expressions.NewLlamadoFuncion($ID.line, $ID.pos, $ID.text, $listParamsCall.l) }
 ;
 
 types returns[environment.TipoExpresion ty]
@@ -133,6 +200,8 @@ expr returns [interfaces.Expression e]
 | NOT left=expr {$e = expressions.NewOperation($NOT.line, $NOT.pos, $left.e, $NOT.text, nil)}
 | left=expr op=AND right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| ID PAR_IZQ listStructExp PAR_DER { $e = expressions.NewStructExp($ID.line, $ID.pos, $ID.text, $listStructExp.l ) }
+| callFuncion {$e = $callFuncion.cf}
 | PAR_IZQ expr PAR_DER { $e = $expr.e }
 | conversionstmt { $e = $conversionstmt.conv }
 |ID PUNTO COUNT { $e = expressions.NewCount($ID.line, $ID.pos, $ID.text)}
@@ -191,5 +260,43 @@ listParams returns[[]interface{} l]
 
 listArray returns[interfaces.Expression p]
 : list = listArray COR_IZQ expr COR_DER { $p = expressions.NewArrayAccess($list.start.GetLine(), $list.start.GetColumn(), $list.p, $expr.e) }
+|list = listArray PUNTO ID { $p = expressions.NewStructAccess($list.start.GetLine(), $list.start.GetColumn(), $list.p, $ID.text)  }
 | ID { $p = expressions.NewLlamadoVar($ID.line, $ID.pos, $ID.text)}
+;
+
+callFuncion returns[interfaces.Expression cf]
+: ID PAR_IZQ listParamsCall PAR_DER { $cf = expressions.NewLlamadoFuncion($ID.line, $ID.pos, $ID.text, $listParamsCall.l) }
+;
+
+listParamsCall returns[[]interface{} l]
+: list=listParamsCall COMA expr {
+                                    var arr []interface{}
+                                    arr = append($list.l, $expr.e)
+                                    $l = arr
+                                }
+| expr  {
+            $l = []interface{}{}
+            $l = append($l, $expr.e)
+        }
+|   {
+        $l = []interface{}{}
+    }
+;
+
+listStructExp returns[[]interface{} l]
+: list=listStructExp COMA ID DOSPUNTOS expr {
+                                            var arr []interface{}
+                                            StrExp := environment.NewStructContent($ID.text, $expr.e)
+                                            arr = append($list.l, StrExp)
+                                            $l = arr
+                                        }
+| ID DOSPUNTOS expr{
+                    var arr []interface{}
+                    StrExp := environment.NewStructContent($ID.text, $expr.e)
+                    arr = append(arr, StrExp)
+                    $l = arr
+                }
+|   {
+        $l = []interface{}{}
+    }
 ;

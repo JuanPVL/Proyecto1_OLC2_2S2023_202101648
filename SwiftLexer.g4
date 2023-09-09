@@ -28,6 +28,10 @@ AT: 'at';
 ISEMPTY: 'isEmpty';
 COUNT: 'count';
 ARRAY: 'array';
+RETURN: 'return';
+FUNC: 'func';
+STRUCT: 'struct';
+GUARD: 'guard';
 
 //primitivos
 NUMBER: [0-9]+ ('.' [0-9]+)?;
@@ -61,6 +65,7 @@ COMA: ',';
 CIERRAPREGUNTA: '?';
 PUNTOCOMA: ';';
 PUNTO: '.';
+FLECHA: '->';
 
 //Saltar
 WHITESPACE: [ \\\r\n\t]+ -> skip;

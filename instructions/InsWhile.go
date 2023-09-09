@@ -44,6 +44,8 @@ func (p While) Ejecutar(ast *environment.AST, env interface{}) environment.Symbo
 				}else if val.ContinueFlag == true || val.Valor == "continue"{
 					fmt.Print("ENCONTRE CONTINUE en while")
 					continue firstLoop
+				} else if val.ReturnFlag == true {
+					return val
 				}
 			}
 		} else {

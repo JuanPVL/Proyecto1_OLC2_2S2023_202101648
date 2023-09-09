@@ -40,6 +40,9 @@ func (va Declaracion) Ejecutar(ast *environment.AST, env interface{}) environmen
 			env.(environment.Environment).SaveVariable(va.Id, result,ast)
 		} else if va.Tipo == environment.DEPENDIENTE {
 			env.(environment.Environment).SaveVariable(va.Id, result,ast)
+		} else if va.Tipo == environment.DEPENDIENTE && result.Tipo == environment.STRUCT {
+			va.Tipo = environment.STRUCT
+			env.(environment.Environment).SaveVariable(va.Id, result,ast)
 		} else {
 			linea := strconv.Itoa(va.Lin)
 			columna := strconv.Itoa(va.Col)

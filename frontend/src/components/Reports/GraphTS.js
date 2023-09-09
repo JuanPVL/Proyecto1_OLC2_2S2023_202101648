@@ -12,7 +12,12 @@ function Graph2({dot}){
             alignItems: 'center',
         }}
     />);*/
-    return <Graphviz dot={dot} />;
+    return <Graphviz dot={dot} options={{
+        zoom: true,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        engine: "dot"
+      }} />;
 };
 
 export default Graph2;

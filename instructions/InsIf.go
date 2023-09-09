@@ -39,6 +39,8 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 				return val
 			} else if val.ContinueFlag == true || val.Valor == "continue"{
 				return val
+			} else if val.ReturnFlag == true {
+				return val
 			}
 		}
 		return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: nil, Mutable: true}
@@ -50,6 +52,8 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
 			if val.BreakFlag == true || val.Valor == "break"{
 				return val
 			} else if val.ContinueFlag == true || val.Valor == "continue"{
+				return val
+			} else if val.ReturnFlag == true {
 				return val
 			}
 		}

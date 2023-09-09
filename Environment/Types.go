@@ -11,4 +11,5 @@ const (
 	ARRAY						//5
 	DEPENDIENTE					//6
 	VECTOR						//7
+	STRUCT						//8
 )

@@ -38,6 +38,18 @@ func (s *BaseSwiftGrammarListener) EnterInstruction(ctx *InstructionContext) {}
 // ExitInstruction is called when production instruction is exited.
 func (s *BaseSwiftGrammarListener) ExitInstruction(ctx *InstructionContext) {}
 
+// EnterStructCreation is called when production structCreation is entered.
+func (s *BaseSwiftGrammarListener) EnterStructCreation(ctx *StructCreationContext) {}
+
+// ExitStructCreation is called when production structCreation is exited.
+func (s *BaseSwiftGrammarListener) ExitStructCreation(ctx *StructCreationContext) {}
+
+// EnterListStructDec is called when production listStructDec is entered.
+func (s *BaseSwiftGrammarListener) EnterListStructDec(ctx *ListStructDecContext) {}
+
+// ExitListStructDec is called when production listStructDec is exited.
+func (s *BaseSwiftGrammarListener) ExitListStructDec(ctx *ListStructDecContext) {}
+
 // EnterPrintstmt is called when production printstmt is entered.
 func (s *BaseSwiftGrammarListener) EnterPrintstmt(ctx *PrintstmtContext) {}
 
@@ -62,6 +74,12 @@ func (s *BaseSwiftGrammarListener) EnterWhilestmt(ctx *WhilestmtContext) {}
 // ExitWhilestmt is called when production whilestmt is exited.
 func (s *BaseSwiftGrammarListener) ExitWhilestmt(ctx *WhilestmtContext) {}
 
+// EnterGuardstmt is called when production guardstmt is entered.
+func (s *BaseSwiftGrammarListener) EnterGuardstmt(ctx *GuardstmtContext) {}
+
+// ExitGuardstmt is called when production guardstmt is exited.
+func (s *BaseSwiftGrammarListener) ExitGuardstmt(ctx *GuardstmtContext) {}
+
 // EnterForstmt is called when production forstmt is entered.
 func (s *BaseSwiftGrammarListener) EnterForstmt(ctx *ForstmtContext) {}
 
@@ -79,6 +97,24 @@ func (s *BaseSwiftGrammarListener) EnterAsignationstmt(ctx *AsignationstmtContex
 
 // ExitAsignationstmt is called when production asignationstmt is exited.
 func (s *BaseSwiftGrammarListener) ExitAsignationstmt(ctx *AsignationstmtContext) {}
+
+// EnterFunction is called when production function is entered.
+func (s *BaseSwiftGrammarListener) EnterFunction(ctx *FunctionContext) {}
+
+// ExitFunction is called when production function is exited.
+func (s *BaseSwiftGrammarListener) ExitFunction(ctx *FunctionContext) {}
+
+// EnterListParamsFunc is called when production listParamsFunc is entered.
+func (s *BaseSwiftGrammarListener) EnterListParamsFunc(ctx *ListParamsFuncContext) {}
+
+// ExitListParamsFunc is called when production listParamsFunc is exited.
+func (s *BaseSwiftGrammarListener) ExitListParamsFunc(ctx *ListParamsFuncContext) {}
+
+// EnterCallFuncionIns is called when production callFuncionIns is entered.
+func (s *BaseSwiftGrammarListener) EnterCallFuncionIns(ctx *CallFuncionInsContext) {}
+
+// ExitCallFuncionIns is called when production callFuncionIns is exited.
+func (s *BaseSwiftGrammarListener) ExitCallFuncionIns(ctx *CallFuncionInsContext) {}
 
 // EnterTypes is called when production types is entered.
 func (s *BaseSwiftGrammarListener) EnterTypes(ctx *TypesContext) {}
@@ -127,3 +163,21 @@ func (s *BaseSwiftGrammarListener) EnterListArray(ctx *ListArrayContext) {}
 
 // ExitListArray is called when production listArray is exited.
 func (s *BaseSwiftGrammarListener) ExitListArray(ctx *ListArrayContext) {}
+
+// EnterCallFuncion is called when production callFuncion is entered.
+func (s *BaseSwiftGrammarListener) EnterCallFuncion(ctx *CallFuncionContext) {}
+
+// ExitCallFuncion is called when production callFuncion is exited.
+func (s *BaseSwiftGrammarListener) ExitCallFuncion(ctx *CallFuncionContext) {}
+
+// EnterListParamsCall is called when production listParamsCall is entered.
+func (s *BaseSwiftGrammarListener) EnterListParamsCall(ctx *ListParamsCallContext) {}
+
+// ExitListParamsCall is called when production listParamsCall is exited.
+func (s *BaseSwiftGrammarListener) ExitListParamsCall(ctx *ListParamsCallContext) {}
+
+// EnterListStructExp is called when production listStructExp is entered.
+func (s *BaseSwiftGrammarListener) EnterListStructExp(ctx *ListStructExpContext) {}
+
+// ExitListStructExp is called when production listStructExp is exited.
+func (s *BaseSwiftGrammarListener) ExitListStructExp(ctx *ListStructExpContext) {}
